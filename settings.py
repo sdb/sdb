@@ -103,4 +103,6 @@ INSTALLED_APPS = (
     'sdb.social'
 )
 
+APP_TITLE = ''
+
 
