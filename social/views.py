@@ -2,16 +2,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-import sys
+from jogging import logging
 
-import traceback
-
+import sys, traceback
 import simplejson as json
 
 from datetime import datetime, timedelta
 
 from social import feeder
-from sdb.social.models import Entry, Service
+from social.models import Entry, Service
 
 
 def index(request):
@@ -30,15 +29,17 @@ def index(request):
 def update(request):
   services = Service.objects.all()
   for service in services:
-    updater = feeder.updaters[service.name]
-    # TODO: check null and log in case of null
-    try:
-      prev_update = service.updated
-      if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
-        updater(service)
-        service.updated = datetime.utcnow()
-        service.save()
-    except:
-      print traceback.print_exception(sys.exc_info()[0], sys.exc_info()[1], sys.exc_info()[2])
+    if feeder.updaters.has_key(service.name):
+      updater = feeder.updaters[service.name]
+      try:
+        prev_update = service.updated
+        if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
+          updater(service)
+          service.updated = datetime.utcnow()
+          service.save()
+      except:
+        logging.exception('updater exception for service %s' %service.name)
+    else:
+      logging.warning('updater for service %s not found' %service.name)
    
   return HttpResponseRedirect("/admin/")

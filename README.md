@@ -4,3 +4,4 @@
 * [simplejson](http://code.google.com/p/simplejson/) (2.1.1)
 * [feedparser](http://www.feedparser.org/) (trunk)
 * [posterous-python](http://github.com/nureineide/posterous-python) (trunk)
+* [jogging] (http://github.com/zain/jogging) (0.2.2)

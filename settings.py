@@ -3,6 +3,7 @@
 
 import os.path
 
+
 BASE_PATH = os.path.dirname(__file__)
 
 DEBUG = True
@@ -81,6 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'jogging.middleware.LoggingMiddleware',
 )
 
 ROOT_URLCONF = 'sdb.urls'
@@ -100,8 +102,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
 
+    'jogging',
+
     'sdb.social'
 )
+
 
 APP_TITLE = ''
 

@@ -1,11 +1,6 @@
-import flickrapi, posterous
-from flickrapi import FlickrError
-
-import feedparser
-
+import flickrapi, posterous, feedparser
 import simplejson as json
 from datetime import datetime, timedelta
-
 from sdb.social.models import Service, Entry
 
 
@@ -23,11 +18,7 @@ def flickr(service):
   prev_update = service.updated
   args = json.loads(service.args)
   flickr = flickrapi.FlickrAPI(args["key"])
-  try:
-    photos = flickr.people_getPublicPhotos(user_id=args["user"], extras='date_upload,url_sq')
-  except FlickrError, e:
-    print e # TODO
-    return
+  photos = flickr.people_getPublicPhotos(user_id=args["user"], extras='date_upload,url_sq')
   photos = photos.find('photos').findall('photo')
   new_photos = []
   for i in range(len(photos)):
