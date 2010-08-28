@@ -1,0 +1,115 @@
+html{color:#000;background:#FFF;}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var,optgroup{font-style:inherit;font-weight:inherit;}
+del,ins{text-decoration:none;}
+li{list-style:none;}
+caption,th{text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym{border:0;font-variant:normal;}
+sup{vertical-align:baseline;}
+sub{vertical-align:baseline;}
+legend{color:#000;}
+input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;}
+input,button,textarea,select{*font-size:100%;}
+
+
+
+body {
+  /* font-family: Verdana,"Bitstream Vera Sans",sans-serif; */
+  font-family:'Lucida Grande','Lucida Sans Unicode','Lucida Sans','Geneva','Verdana',sans-serif;
+  line-height: 1.4em;
+  color: #7E7E7E;
+}
+
+a {
+  color: #009900;
+}
+
+h2.title {
+  font-size: 150%;
+  font-weight: bold;
+  color: #009900;
+  margin-bottom: 10px;
+}
+
+img.thumb {
+  opacity:0.4;
+  filter:alpha(opacity=40)
+}
+
+#sidebar_wrapper {
+  float:left;
+  margin-left:-200px;
+  width:200px;
+}
+
+#sidebar {
+  padding: 15px;
+  font-size: 0.8em;
+}
+
+#sidebar .link {
+  text-align: right;
+}
+
+#links {
+  padding-right: 20px;
+}
+
+#content_wrapper {
+  float:left;
+  width:100%;
+}
+
+#content {
+  margin-right:200px;
+  padding: 10px;
+}
+
+#content hr {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px dotted gray;
+  background-color: inherit;
+  color: inherit;
+}
+
+.update {
+  padding: 3px;
+}
+
+.update .icon-update {
+  float:left;
+  padding: 6px 15px 3px 15px;
+}
+
+.update .icon-update img {
+  opacity:0.6;
+  filter:alpha(opacity=60)
+}
+
+.update .pre-update {
+  float:left;
+  padding: 3px 40px 3px 10px;
+  font-size: 0.7em;
+}
+
+.update-content {
+  overflow: auto;
+  padding: 3px;
+  font-size: 0.9em;
+}
+
+.photos ul {
+  overflow: auto;
+}
+
+.photos ul li {
+  float: left;
+  list-style: none;
+  padding: 5px;
+}

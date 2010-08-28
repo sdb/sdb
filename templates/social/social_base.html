@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+<div id="main">
+  <div id="content_wrapper">
+    <div id="content">
+      {% block social_content %}{% endblock %}
+    </div>
+  </div>
+  <div id="sidebar_wrapper">
+    <div id="sidebar">
+      <h2 class="title">Stefan De Boey</h2>
+      <ul id="links">
+        {% for link in social.links %}
+          <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

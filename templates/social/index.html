@@ -1,0 +1,65 @@
+{% extends "social/social_base.html" %}
+
+{% load social_extras %}
+
+{% block social_content %}
+{% for update in updates %}
+  {% if update.entry.typ = 'photos' %}
+    <div class="photos update">
+      <div class="icon-update"><img src="/media/img/photography.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <ul class="update-content">
+        {% for item in update.data %}
+          <li>
+            <a href="{{ item.url }}"><img class="thumb" src="{{ item.thumb }}" height="75px" width="75px" /></a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'status' %}
+    <div class="status update">
+      <div class="icon-update"><img src="/media/img/twitter.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">{{ update.data|encode_status }}</div>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'bookmark' %}
+    <div class="bookmark update">
+      <div class="icon-update"><img src="/media/img/bookmark.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">
+        <a href="{{ update.data.url }}">{{ update.data.title }}</a>
+      </div>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'hypem' %}
+    <div class="hypem update">
+      <div class="icon-update"><img src="/media/img/heart.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">
+        <a href="{{ update.data.url }}">{{ update.data.title }}</a>
+      </div>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'post' %}
+    <div class="post update">
+      <div class="icon-update"><img src="/media/img/pen.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">
+        <a href="{{ update.data.url }}">{{ update.data.title }}</a>
+      </div>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'collab' %}
+    <div class="collab update">
+      <div class="icon-update"><img src="/media/img/collaboration.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">
+        <a href="{{ update.data.url }}">{{ update.data.title }}</a>
+      </div>
+    </div>
+  {% endif %}
+  <hr />
+{% endfor %}
+{% endblock %}

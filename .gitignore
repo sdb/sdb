@@ -1,0 +1,4 @@
+*.pyc
+
+RUN
+settings_*.py
