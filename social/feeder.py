@@ -12,6 +12,7 @@ updaters = {
   'posterous' : lambda service: update_posterous(service),
   'github' : lambda service: github(service),
   'disqus' : lambda service: disqus(service),
+  'wakoopa' : lambda service: wakoopa(service),
 }
 
 
@@ -98,4 +99,16 @@ def disqus(service):
     if pub_date > prev_update:
       entry = Entry(service=service, desc='Disqus Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='comment')
       entry.save()
+
+
+def wakoopa(service):
+  prev_update = service.updated
+  args = json.loads(service.args)
+  feed = feedparser.parse('http://wakoopa.com/' + args['user'] + '/newly_used.rss')
+  for msg in feed.entries:
+    pub_date = datetime(*msg.updated_parsed[:6])
+    if pub_date > prev_update:
+      entry = Entry(service=service, desc='Wakoopa Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='program')
+      entry.save()
+
 

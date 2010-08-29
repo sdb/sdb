@@ -75,6 +75,15 @@
       </div>
     </div>
   {% endif %}
+  {% if update.entry.typ = 'program' %}
+    <div class="comment update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/process.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <span>I started using <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+      </div>
+    </div>
+  {% endif %}
   <hr />
 {% endfor %}
 {% endblock %}
