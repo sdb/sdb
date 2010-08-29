@@ -26,7 +26,7 @@
             {% endif %}
 
             {% if model.name = 'Entries' %}
-                <td><a href="{% url update %}">{% trans 'Update' %}</a></td>
+                <td><a href="{% url update %}?redirect={{ request.path }}">{% trans 'Update' %}</a></td>
             {% else %}
                 <td>&nbsp;</td>
             {% endif %}

@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.core.urlresolvers import reverse
 
 from jogging import logging
 
@@ -42,4 +43,4 @@ def update(request):
     else:
       logging.warning('updater for service %s not found' %service.name)
    
-  return HttpResponseRedirect("/admin/")
+  return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
