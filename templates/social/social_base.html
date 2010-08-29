@@ -17,6 +17,15 @@
           <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
         {% endfor %}
       </ul>
+      <ul class="types">
+        <li><a href="{% url social %}" title="Show all"><img src="/media/img/world.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'bookmark' %}" title="Show bookmarks only"><img src="/media/img/bookmark.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'photos' %}" title="Show photo updates only"><img src="/media/img/photography.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'collab' %}" title="Show collaboration events only"><img src="/media/img/collaboration.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'fav' %}" title="Show favs only"><img src="/media/img/heart.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'post' %}" title="Show blog posts only"><img src="/media/img/pen.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'status' %}" title="Show status updates only"><img src="/media/img/twitter.png" width="16" height="16" /></a></li>
+      </ul>
       <p class="box">
       {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.
       {% else %}Don't <a href="{% url update %}" title="Update all services at once">feed</a> me, i'm {% if elapsed < 3 %}really{% endif %} not hungry.

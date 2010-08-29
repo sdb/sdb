@@ -27,7 +27,7 @@ def flickr(service):
     if upload_date > prev_update:
       new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
     if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.fromtimestamp(int(photos[i+1].attrib["dateupload"])):
-      if (len(photos) > 0):
+      if (len(new_photos) > 0):
         entry = Entry(desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
         entry.save()
       new_photos = []
@@ -63,7 +63,7 @@ def hypem(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Hypem Fav', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='hypem')
+      entry = Entry(desc='Hypem Fav', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='fav')
       entry.save()
 
 

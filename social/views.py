@@ -14,9 +14,10 @@ from social import feeder
 from social.models import Entry, Service
 
 
-def index(request):
+def index(request, typ=""):
   updates = []
-  for entry in Entry.objects.order_by('-pub_date')[:50]:
+  entries = Entry.objects.order_by('-pub_date')[:50] if typ == '' else Entry.objects.filter(typ=typ).order_by('-pub_date')[:50]
+  for entry in entries:
     update = {'pub_date':entry.pub_date}
     update['entry'] = entry
     if entry.typ == 'photos':

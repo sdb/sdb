@@ -40,6 +40,11 @@ img.thumb {
   filter:alpha(opacity=40)
 }
 
+#main {
+  margin: auto;
+  width: 1000px;
+}
+
 #sidebar_wrapper {
   float:left;
   margin-left:-200px;
@@ -52,7 +57,22 @@ img.thumb {
 }
 
 #sidebar p.box {
+  margin-top: 25px;
+}
+
+#sidebar ul.types {
   margin-top:30px;
+  overflow: auto;
+}
+
+#sidebar ul.types li {
+  float: left;
+  padding: 3px;
+}
+
+#sidebar ul.types img {
+  opacity:0.4;
+  filter:alpha(opacity=40)
 }
 
 #sidebar .link {
@@ -71,7 +91,7 @@ img.thumb {
 
 #content {
   margin-right:200px;
-  padding: 10px;
+  padding: 30px 20px 40px 30px;
 }
 
 #content hr {
