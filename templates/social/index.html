@@ -60,6 +60,13 @@
       </div>
     </div>
   {% endif %}
+  {% if update.entry.typ = 'comment' %}
+    <div class="comment update">
+      <div class="icon-update"><img src="/media/img/comment.png" width="16" height="16" /></div>
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="update-content">{{ update.data.desc }}</div>
+    </div>
+  {% endif %}
   <hr />
 {% endfor %}
 {% endblock %}

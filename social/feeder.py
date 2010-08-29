@@ -11,6 +11,7 @@ updaters = {
   'hypem' : lambda service: hypem(service),
   'posterous' : lambda service: update_posterous(service),
   'github' : lambda service: github(service),
+  'disqus' : lambda service: disqus(service),
 }
 
 
@@ -87,4 +88,14 @@ def github(service):
       entry = Entry(desc='Github Activity', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='collab')
       entry.save()
 
+
+def disqus(service):
+  prev_update = service.updated
+  args = json.loads(service.args)
+  feed = feedparser.parse('http://disqus.com/' + args['user'] + '/comments.rss')
+  for msg in feed.entries:
+    pub_date = datetime(*msg.updated_parsed[:6])
+    if pub_date > prev_update:
+      entry = Entry(desc='Disqus Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='comment')
+      entry.save()
 
