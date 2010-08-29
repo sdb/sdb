@@ -2,3 +2,5 @@
 
 RUN
 settings_*.py
+
+dump.json

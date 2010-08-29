@@ -29,7 +29,7 @@ def flickr(service):
       new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
     if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.fromtimestamp(int(photos[i+1].attrib["dateupload"])):
       if (len(new_photos) > 0):
-        entry = Entry(desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
+        entry = Entry(service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
         entry.save()
       new_photos = []
 
@@ -41,7 +41,7 @@ def twitter(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Twitter Update', data=json.dumps(msg.title), pub_date=pub_date, typ='status')
+      entry = Entry(service=service, desc='Twitter Update', data=json.dumps(msg.title), pub_date=pub_date, typ='status')
       entry.save()
 
 
@@ -53,7 +53,7 @@ def delicious(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Delicious Bookmark', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='bookmark')
+      entry = Entry(service=service, desc='Delicious Bookmark', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='bookmark')
       entry.save()
 
 
@@ -64,7 +64,7 @@ def hypem(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Hypem Fav', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='fav')
+      entry = Entry(service=service, desc='Hypem Fav', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='fav')
       entry.save()
 
 
@@ -74,7 +74,7 @@ def update_posterous(service):
   api = posterous.API()
   for post in api.read_posts(hostname=args["hostname"]):
     if post.date > prev_update:
-      entry = Entry(desc='Posterous Post', data=json.dumps({"title":post.title, "url":post.link}), pub_date=post.date, typ='post')
+      entry = Entry(service=service, desc='Posterous Post', data=json.dumps({"title":post.title, "url":post.link}), pub_date=post.date, typ='post')
       entry.save()
 
 
@@ -85,7 +85,7 @@ def github(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Github Activity', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='collab')
+      entry = Entry(service=service, desc='Github Activity', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='collab')
       entry.save()
 
 
@@ -96,6 +96,6 @@ def disqus(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(desc='Disqus Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='comment')
+      entry = Entry(service=service, desc='Disqus Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='comment')
       entry.save()
 
