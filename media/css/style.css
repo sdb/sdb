@@ -44,6 +44,12 @@ img.thumb {
   filter:alpha(opacity=40)
 }
 
+img.open-link {
+  opacity:0.4;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
 #main {
   margin: auto;
   width: 1000px;
@@ -124,7 +130,7 @@ img.thumb {
 
 .update .icon-update {
   float:left;
-  padding: 6px 15px 3px 15px;
+  padding: 6px 30px 3px 0;
 }
 
 .update .icon-update img {
@@ -134,7 +140,7 @@ img.thumb {
 
 .update .pre-update {
   float:left;
-  padding: 3px 40px 3px 10px;
+  padding: 3px 25px 3px 5px;
   font-size: 0.7em;
 }
 
@@ -144,6 +150,7 @@ img.thumb {
   font-size: 0.9em;
 }
 
+update-content
 .photos ul {
   overflow: auto;
 }

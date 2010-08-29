@@ -41,7 +41,7 @@ def twitter(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(service=service, desc='Twitter Update', data=json.dumps(msg.title), pub_date=pub_date, typ='status')
+      entry = Entry(service=service, desc='Twitter Update', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='status')
       entry.save()
 
 
