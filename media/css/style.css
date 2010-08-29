@@ -35,6 +35,10 @@ h2.title {
   margin-bottom: 10px;
 }
 
+h2.title a {
+  text-decoration: none;
+}
+
 img.thumb {
   opacity:0.4;
   filter:alpha(opacity=40)
@@ -58,6 +62,13 @@ img.thumb {
 
 #sidebar p.box {
   margin-top: 25px;
+}
+
+#sidebar p.sidenote {
+  text-align: right;
+  margin-top: 10px;
+  font-size: 70%;
+  line-height: 110%
 }
 
 #sidebar ul.types {

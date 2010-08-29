@@ -11,7 +11,7 @@
   </div>
   <div id="sidebar_wrapper">
     <div id="sidebar">
-      <h2 class="title">{{ title }}</h2>
+      <h2 class="title"><a href="{% url social %}">{{ title }}</a></h2>
       <ul id="links">
         {% for link in social.links %}
           <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
@@ -32,6 +32,8 @@
       {% endif %}
       Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{% if elapsed > 0 %}{{ elapsed }} minute ago.{% else %} i'm still chewin'!{% endif %}{% endif %}
       </p>
+      <p class="sidenote" style="margin-top: 50px;">Created with <a href="http://www.djangoproject.com/">Django</a>, check out the <a href="http://github.com/sdb/sdb">source code</a>.</p>
+      <p class="sidenote">Credits: <a href="http://www.python.org/">Python</a>, <a href="http://www.djangoproject.com/">Django</a>, <a href="http://pc.de/icons/#Dortmund">PC.DE Dortmund Icon Set</a>, <a href="http://github.com/">GitHub</a></p>
     </div>
   </div>
 </div>
