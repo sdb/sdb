@@ -62,13 +62,17 @@ img.thumb {
 
 #sidebar p.box {
   margin-top: 25px;
+  line-height: 120%;
+  text-align: right;
+  padding-right: 20px;
 }
 
 #sidebar p.sidenote {
   text-align: right;
   margin-top: 10px;
   font-size: 70%;
-  line-height: 110%
+  line-height: 110%;
+  padding-right: 20px;
 }
 
 #sidebar ul.types {
