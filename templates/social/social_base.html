@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load social_extras %}
+
 {% block main_content %}
 <div id="main">
   <div id="content_wrapper">
@@ -15,6 +17,12 @@
           <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
         {% endfor %}
       </ul>
+      <p class="box">
+      {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.
+      {% else %}Don't <a href="{% url update %}" title="Update all services at once">feed</a> me, i'm {% if elapsed < 3 %}really{% endif %} not hungry.
+      {% endif %}
+      Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{% if elapsed > 0 %}{{ elapsed }} minute ago.{% else %} i'm still chewin'!{% endif %}{% endif %}
+      </p>
     </div>
   </div>
 </div>

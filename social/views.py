@@ -16,7 +16,7 @@ from social.models import Entry, Service
 
 def index(request):
   updates = []
-  for entry in Entry.objects.order_by('-pub_date')[:100]:
+  for entry in Entry.objects.order_by('-pub_date')[:50]:
     update = {'pub_date':entry.pub_date}
     update['entry'] = entry
     if entry.typ == 'photos':

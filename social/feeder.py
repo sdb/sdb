@@ -27,8 +27,9 @@ def flickr(service):
     if upload_date > prev_update:
       new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
     if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.fromtimestamp(int(photos[i+1].attrib["dateupload"])):
-      entry = Entry(desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
-      entry.save()
+      if (len(photos) > 0):
+        entry = Entry(desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
+        entry.save()
       new_photos = []
 
 
