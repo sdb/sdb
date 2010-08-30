@@ -2,7 +2,6 @@
 
 ## Improvements ##
 
-* support GoodReads updates
 * support StackOverflow updates
 * support Amazon Wish List updates
 * support BitBucket updates

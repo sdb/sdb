@@ -13,6 +13,7 @@ updaters = {
   'github' : lambda service: github(service),
   'disqus' : lambda service: disqus(service),
   'wakoopa' : lambda service: wakoopa(service),
+  'goodreads' : lambda service: goodreads(service),
 }
 
 
@@ -109,6 +110,17 @@ def wakoopa(service):
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
       entry = Entry(service=service, desc='Wakoopa Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='program')
+      entry.save()
+
+
+def goodreads(service):
+  prev_update = service.updated
+  args = json.loads(service.args)
+  feed = feedparser.parse('http://www.goodreads.com/user/updates_rss/' + args['user'])
+  for msg in feed.entries:
+    pub_date = datetime(*msg.updated_parsed[:6])
+    if pub_date > prev_update:
+      entry = Entry(service=service, desc='GoodReads Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='book')
       entry.save()
 
 

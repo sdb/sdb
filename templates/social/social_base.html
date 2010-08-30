@@ -25,7 +25,9 @@
         <li><a href="{% url social 'fav' %}" title="Show favs only"><img src="/media/img/heart.png" width="16" height="16" /></a></li>
         <li><a href="{% url social 'post' %}" title="Show blog posts only"><img src="/media/img/pen.png" width="16" height="16" /></a></li>
         <li><a href="{% url social 'status' %}" title="Show status updates only"><img src="/media/img/twitter.png" width="16" height="16" /></a></li>
-        <!-- TODO show all types ? configurable ? <li><a href="{% url social 'comment' %}" title="Show comments only"><img src="/media/img/comment.png" width="16" height="16" /></a></li> -->
+        <li><a href="{% url social 'comment' %}" title="Show comments only"><img src="/media/img/comment.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'book' %}" title="Show books only"><img src="/media/img/library.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social 'program' %}" title="Show programs only"><img src="/media/img/process.png" width="16" height="16" /></a></li>
       </ul>
       <p class="box">
       {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.

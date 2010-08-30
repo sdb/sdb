@@ -84,6 +84,16 @@
       </div>
     </div>
   {% endif %}
+  {% if update.entry.typ = 'book' %}
+    <div class="book update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/library.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <span>{{ update.data.title }}</span>
+        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+      </div>
+    </div>
+  {% endif %}
   <hr />
 {% endfor %}
 {% endblock %}
