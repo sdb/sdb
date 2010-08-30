@@ -2,10 +2,11 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from jogging import logging
 
-import sys, traceback
+import sys, traceback, threading
 import simplejson as json
 
 from datetime import datetime, timedelta
@@ -16,7 +17,8 @@ from social.models import Entry, Service
 
 def index(request, typ=""):
   updates = []
-  entries = Entry.objects.order_by('-pub_date')[:50] if typ == '' else Entry.objects.filter(typ=typ).order_by('-pub_date')[:50]
+  per_page = settings.ENTRIES_PER_PAGE
+  entries = Entry.objects.order_by('-pub_date')[:per_page] if typ == '' else Entry.objects.filter(typ=typ).order_by('-pub_date')[:per_page]
   for entry in entries:
     update = {'pub_date':entry.pub_date}
     update['entry'] = entry
@@ -26,9 +28,17 @@ def index(request, typ=""):
       update['data'] = json.loads(entry.data)
     updates.append(update)
   return render_to_response('social/index.html', {'updates':updates}, context_instance=RequestContext(request))
+
+  
+def update(request):
+  if (settings.UPDATE_THREAD):
+    UpdateThread().start()
+  else:
+    do_update()
+  return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
   
 
-def update(request):
+def do_update():
   services = Service.objects.all()
   for service in services:
     if feeder.updaters.has_key(service.name):
@@ -44,4 +54,7 @@ def update(request):
     else:
       logging.warning('updater for service %s not found' %service.name)
    
-  return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
+
+class UpdateThread ( threading.Thread ):
+  def run ( self ):
+    do_update()
