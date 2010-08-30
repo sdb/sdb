@@ -5,4 +5,4 @@ settings_*.py
 
 dump.json
 
-sdb.pid
+*.pid

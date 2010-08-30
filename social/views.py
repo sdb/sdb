@@ -31,30 +31,40 @@ def index(request, typ=""):
 
   
 def update(request):
-  if (settings.UPDATE_THREAD):
-    UpdateThread().start()
-  else:
-    do_update()
-  return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
-  
-
-def do_update():
+  to_update = []
   services = Service.objects.all()
   for service in services:
     if feeder.updaters.has_key(service.name):
-      updater = feeder.updaters[service.name]
-      try:
-        prev_update = service.updated
-        if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
-          updater(service)
-          service.updated = datetime.utcnow()
-          service.save()
-      except:
-        logging.exception('updater exception for service %s' %service.name)
+      prev_update = service.updated
+      if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
+        to_update.append(service)  
     else:
       logging.warning('updater for service %s not found' %service.name)
+  if len(to_update) > 0:
+    if (settings.UPDATE_THREAD):
+      UpdateThread(to_update).start()
+    else:
+      do_update(to_update)
+  return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
+  
+
+def do_update(services):
+  for service in services:
+    updater = feeder.updaters[service.name]
+    try:
+      updater(service)
+      service.updated = datetime.utcnow()
+      service.save()
+    except:
+      logging.exception('updater exception for service %s' %service.name)
    
 
 class UpdateThread ( threading.Thread ):
+  
+  def __init__(self, services=None):
+    threading.Thread.__init__(self)
+    self.services = services
+
   def run ( self ):
-    do_update()
+    do_update(self.services)
+
