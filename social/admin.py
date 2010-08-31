@@ -2,10 +2,10 @@ from sdb.social.models import Service, Entry, Link
 from django.contrib import admin
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'name', 'period', 'args']
+    list_display = ['title', 'name', 'period', 'updated', 'args', 'props']
 
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ['desc', 'typ', 'pub_date']
+    list_display = ['desc', 'typ', 'pub_date', 'data']
 
 class LinkAdmin(admin.ModelAdmin):
     list_display = ['title', 'url']
