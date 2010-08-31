@@ -3,7 +3,7 @@
 ### Social stream ###
 
 * show updates from your on-line services
-* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads and Last.fm.
+* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction and StumbleUpon.
 * filter by types of updates
 * admin interface
 

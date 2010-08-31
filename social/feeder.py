@@ -16,6 +16,7 @@ updaters = {
   'goodreads' : lambda service: goodreads(service),
   'lastfm' : lambda service: update_lastfm(service),
   'getsatisfaction': lambda service: getsatisfaction(service),
+  'stumbleupon': lambda service: generic_feed(service, "http://rss.stumbleupon.com/user/%s/favorites" %json.loads(service.args)['user'], 'StumbleUpon Favorite', 'fav')
 }
 
 
@@ -153,3 +154,11 @@ def getsatisfaction(service):
       entry.save()
 
 
+def generic_feed(service, url, desc, typ):
+  prev_update = service.updated
+  feed = feedparser.parse(url)
+  for msg in feed.entries:
+    pub_date = datetime(*msg.updated_parsed[:6])
+    if pub_date > prev_update:
+      entry = Entry(service=service, desc=desc, data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ=typ)
+      entry.save()

@@ -42,6 +42,7 @@
       <div class="update-content">
         <span>{{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        <div>{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
