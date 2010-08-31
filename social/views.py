@@ -56,7 +56,7 @@ def do_update(services):
       service.updated = datetime.utcnow()
       service.save()
     except:
-      logging.exception('updater exception for service %s' %service.name)
+      logging.exception(msg='updater exception for service %s' %service.name, exception=True)
    
 
 class UpdateThread ( threading.Thread ):

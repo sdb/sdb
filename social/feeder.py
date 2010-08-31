@@ -1,4 +1,4 @@
-import flickrapi, posterous, feedparser
+import flickrapi, posterous, feedparser, lastfm
 import simplejson as json
 from datetime import datetime, timedelta
 from sdb.social.models import Service, Entry
@@ -14,6 +14,7 @@ updaters = {
   'disqus' : lambda service: disqus(service),
   'wakoopa' : lambda service: wakoopa(service),
   'goodreads' : lambda service: goodreads(service),
+  'lastfm' : lambda service: update_lastfm(service),
 }
 
 
@@ -120,7 +121,21 @@ def goodreads(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(service=service, desc='GoodReads Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='book')
+      if msg.has_key('title'):
+        entry = Entry(service=service, desc='GoodReads Update', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='book')
+        entry.save()
+
+
+def update_lastfm(service):
+  prev_update = service.updated
+  args = json.loads(service.args)
+  api_key = args['api_key']
+  api = lastfm.Api(api_key)
+  user = api.get_user(args['user'])
+  tracks = user.get_recent_tracks()
+  for track in tracks:
+    if track.played_on > prev_update:
+      entry = Entry(service=service, desc='Last.fm Update', data=json.dumps({'title':track.name, 'artist':track.artist.name, 'url':track.url, 'image':track.image['large']}), pub_date=track.played_on, typ='scrobble')
       entry.save()
 
-
+  
