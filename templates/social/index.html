@@ -70,8 +70,10 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/comment.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.desc }}</span>
+        <span>{{ update.data.desc|safe }}</span>
+        {% if update.data.url %}
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        {% endif %}
       </div>
     </div>
   {% endif %}

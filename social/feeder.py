@@ -15,6 +15,7 @@ updaters = {
   'wakoopa' : lambda service: wakoopa(service),
   'goodreads' : lambda service: goodreads(service),
   'lastfm' : lambda service: update_lastfm(service),
+  'getsatisfaction': lambda service: getsatisfaction(service),
 }
 
 
@@ -27,10 +28,10 @@ def flickr(service):
   new_photos = []
   for i in range(len(photos)):
     photo = photos[i]
-    upload_date = datetime.fromtimestamp(int(photo.attrib["dateupload"]))
+    upload_date = datetime.utcfromtimestamp(int(photo.attrib["dateupload"]))
     if upload_date > prev_update:
       new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
-    if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.fromtimestamp(int(photos[i+1].attrib["dateupload"])):
+    if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.utcfromtimestamp(int(photos[i+1].attrib["dateupload"])):
       if (len(new_photos) > 0):
         entry = Entry(service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
         entry.save()
@@ -138,4 +139,17 @@ def update_lastfm(service):
       entry = Entry(service=service, desc='Last.fm Update', data=json.dumps({'title':track.name, 'artist':track.artist.name, 'url':track.url, 'image':track.image['large']}), pub_date=track.played_on, typ='scrobble')
       entry.save()
 
-  
+
+# very basic support for Get Satisfaction
+def getsatisfaction(service):
+  prev_update = service.updated
+  args = json.loads(service.args)
+
+  feed = feedparser.parse('http://api.getsatisfaction.com/people/' + args['user'] + '/replies')
+  for msg in feed.entries:
+    pub_date = datetime(*msg.updated_parsed[:6])
+    if pub_date > prev_update:
+      entry = Entry(service=service, desc='Get Satifaction Reply', data=json.dumps({'title':msg.title, 'desc':msg.description}), pub_date=pub_date, typ='comment')
+      entry.save()
+
+
