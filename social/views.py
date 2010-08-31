@@ -62,6 +62,9 @@ def update(request):
   
 
 def do_update(services):
+  global running_update
+  global running_update_lock
+  
   for service in services:
     updater = feeder.updaters[service.name]
     try:
