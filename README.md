@@ -3,7 +3,7 @@
 ### Social stream ###
 
 * show updates from your on-line services
-* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine and Posterous
+* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads and Last.fm.
 * filter by types of updates
 * admin interface
 
@@ -16,6 +16,7 @@
 * [feedparser](http://www.feedparser.org/) (trunk)
 * [posterous-python](http://github.com/nureineide/posterous-python) (trunk)
 * [jogging](http://github.com/zain/jogging) (0.2.2)
+* [python-lastfm](http://code.google.com/p/python-lastfm/) (trunk)
 
 
 ## Installation ##
