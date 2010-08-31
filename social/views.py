@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.contrib import messages
 
 from jogging import logging
 
@@ -13,6 +14,10 @@ from datetime import datetime, timedelta
 
 from social import feeder
 from social.models import Entry, Service
+
+
+running_update = False
+running_update_lock = threading.RLock()
 
 
 def index(request, typ=""):
@@ -31,6 +36,8 @@ def index(request, typ=""):
 
   
 def update(request):
+  global running_update
+  global running_update_lock
   to_update = []
   services = Service.objects.all()
   for service in services:
@@ -40,11 +47,17 @@ def update(request):
         to_update.append(service)  
     else:
       logging.warning('updater for service %s not found' %service.name)
-  if len(to_update) > 0:
+  running_update_lock.acquire()
+  if not running_update and len(to_update) > 0:
+    running_update = True
     if (settings.UPDATE_THREAD):
       UpdateThread(to_update).start()
     else:
       do_update(to_update)
+    messages.add_message(request, messages.INFO, 'Thank you! %d services are scheduled for an update.' %len(to_update))
+  else:
+    messages.add_message(request, messages.INFO, 'Nothing to feed! All services are up-to-date. Thanks anyway!')
+  running_update_lock.release()
   return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
   
 
@@ -57,7 +70,9 @@ def do_update(services):
       service.save()
     except:
       logging.exception(msg='updater exception for service %s' %service.name, exception=True)
-   
+  running_update_lock.acquire()
+  running_update = False
+  running_update_lock.release()
 
 class UpdateThread ( threading.Thread ):
   
