@@ -58,7 +58,7 @@ def delicious(service):
   for msg in feed.entries:
     pub_date = datetime(*msg.updated_parsed[:6])
     if pub_date > prev_update:
-      entry = Entry(service=service, desc='Delicious Bookmark', data=json.dumps({'title':msg.title, 'url':msg.link}), pub_date=pub_date, typ='bookmark')
+      entry = Entry(service=service, desc='Delicious Bookmark', data=json.dumps({'title':msg.title, 'url':msg.link, 'desc':msg.description}), pub_date=pub_date, typ='bookmark')
       entry.save()
 
 

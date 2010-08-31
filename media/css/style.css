@@ -39,7 +39,7 @@ h2.title a {
   text-decoration: none;
 }
 
-img.thumb {
+img.thumb, .update-content img {
   opacity:0.4;
   filter:alpha(opacity=40)
 }
@@ -156,6 +156,12 @@ img.open-link {
   overflow: auto;
   padding: 3px;
   font-size: 0.9em;
+}
+
+div.update-content div.desc {
+  font-size: 80%;
+  line-height: 140%;
+  margin-top: 5px;
 }
 
 update-content .photos ul {
