@@ -49,7 +49,8 @@ def update(request):
       logging.warning('updater for service %s not found' %service.name)
   running_update_lock.acquire()
   if not running_update and len(to_update) > 0:
-    running_update = True
+    running_update = True  
+    running_update_lock.release()
     if (settings.UPDATE_THREAD):
       UpdateThread(to_update).start()
     else:
@@ -57,14 +58,11 @@ def update(request):
     messages.add_message(request, messages.INFO, 'Thank you! %d services are scheduled for an update.' %len(to_update))
   else:
     messages.add_message(request, messages.INFO, 'Nothing to feed! All services are up-to-date. Thanks anyway!')
-  running_update_lock.release()
   return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
   
 
 def do_update(services):
   global running_update
-  global running_update_lock
-  
   for service in services:
     updater = feeder.updaters[service.name]
     try:
@@ -73,9 +71,7 @@ def do_update(services):
       service.save()
     except:
       logging.exception(msg='updater exception for service %s' %service.name, exception=True)
-  running_update_lock.acquire()
   running_update = False
-  running_update_lock.release()
 
 class UpdateThread ( threading.Thread ):
   

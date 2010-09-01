@@ -1,8 +1,10 @@
+The Django project for my personal site. Still in early development, currently more like a prototype :)
+
 ## Features ##
 
 ### Social stream ###
 
-* show updates from your on-line services
+* show updates from on-line services
 * supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction and StumbleUpon.
 * filter by types of updates
 * admin interface
