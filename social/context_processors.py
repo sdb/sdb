@@ -12,4 +12,5 @@ def social(request):
   return {'title':settings.APP_TITLE,
           'last_update':last_update,
           'elapsed':elapsed,
-          'social':{'links':Link.objects.order_by('title')}}
+          'social':{'links':Link.objects.order_by('title')},
+          'favicon':settings.FAVICON,}
