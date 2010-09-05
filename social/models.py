@@ -10,6 +10,12 @@ class Service(models.Model):
   period = models.IntegerField()
   updated = models.DateTimeField(blank=True, default=datetime.min)
 
+  def __str__(self):
+    return self.title
+
+  class Meta:
+    ordering = ['name']
+
 
 class Entry(models.Model):
   desc = models.CharField(max_length=255)
@@ -18,6 +24,9 @@ class Entry(models.Model):
   typ = models.CharField(max_length=255)
   service = models.ForeignKey('Service')
 
+  def __str__(self):
+    return self.desc
+
   class Meta:
     verbose_name_plural = 'Entries'
     ordering = ['-pub_date']
@@ -25,3 +34,9 @@ class Entry(models.Model):
 class Link(models.Model):
   title = models.CharField(max_length=255)
   url = models.URLField()
+
+  def __str__(self):
+    return self.title
+
+  class Meta:
+    ordering = ['title']
