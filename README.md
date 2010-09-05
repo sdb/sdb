@@ -1,11 +1,11 @@
-The Django project for my personal site. Still in early development, currently more like a prototype :)
+The Django project for my personal site. Still in early development.
 
 ## Features ##
 
 ### Social stream ###
 
 * show updates from on-line services
-* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction and StumbleUpon.
+* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction, Stack Overflow and StumbleUpon.
 * filter by types of updates
 * admin interface
 
@@ -13,19 +13,19 @@ The Django project for my personal site. Still in early development, currently m
 ## Dependencies ##
 
 * [Django](http://www.djangoproject.com/) (1.2.1)
-* [flickrapi](http://stuvel.eu/projects/flickrapi) (1.4.2)
 * [simplejson](http://code.google.com/p/simplejson/) (2.1.1)
-* [feedparser](http://www.feedparser.org/) (trunk)
-* [posterous-python](http://github.com/nureineide/posterous-python) (trunk)
 * [jogging](http://github.com/zain/jogging) (0.2.2)
-* [python-lastfm](http://code.google.com/p/python-lastfm/) (trunk)
+* [feedparser](http://www.feedparser.org/) (trunk) (optional)
+* [posterous-python](http://github.com/nureineide/posterous-python) (trunk) (optional)
+* [flickrapi](http://stuvel.eu/projects/flickrapi) (1.4.2) (optional)
+* [python-lastfm](http://code.google.com/p/python-lastfm/) (trunk) (optional)
 
 
 ## Installation ##
 
 This is a general overview of the steps to be taken to install the app. Note that at the moment this description is not yet complete.
 
-If not done yet, install the required dependencies.
+First of all, install the required dependencies.
 
 ### Fresh ###
 
