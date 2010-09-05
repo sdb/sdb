@@ -10,14 +10,17 @@ from social.models import Service
 def index(request):
   twitter = ''
   identica = ''
+  linkedin = ''
   mailto = settings.CONTACT_MAILTO if hasattr(settings, 'CONTACT_MAILTO') else None
-  services = Service.objects.filter(name='twitter') | Service.objects.filter(name='identica')
+  services = Service.objects.filter(name='twitter') | Service.objects.filter(name='identica') | Service.objects.filter(name='linkedin')
   for service in services:  
     if service.name == 'twitter':
       twitter = 'http://twitter.com/%s' %json.loads(service.args)['user']
     if service.name == 'identica':
       identica = 'http://identi.ca/%s' %json.loads(service.args)['user']
-  return render_to_response('contact/index.html', {'mailto':mailto, 'twitter':twitter, 'identica':identica}, context_instance=RequestContext(request))
+    if service.name == 'linkedin':
+      linkedin = 'http://www.linkedin.com/in/%s' %json.loads(service.args)['user']
+  return render_to_response('contact/index.html', {'mailto':mailto, 'twitter':twitter, 'identica':identica, 'linkedin':linkedin}, context_instance=RequestContext(request))
   
 
 
