@@ -23,6 +23,7 @@ class Entry(models.Model):
   pub_date = models.DateTimeField()
   typ = models.CharField(max_length=255)
   service = models.ForeignKey('Service')
+  uuid = models.CharField(max_length=255)
 
   def __str__(self):
     return self.desc

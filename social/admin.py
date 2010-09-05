@@ -13,7 +13,7 @@ class ServiceAdmin(admin.ModelAdmin):
   actions = [reset_service]
 
 class EntryAdmin(admin.ModelAdmin):
-  list_display = ['desc', 'typ', 'service', 'pub_date', 'data']
+  list_display = ['uuid', 'desc', 'typ', 'service', 'pub_date', 'data']
   list_filter = ['typ', 'desc']
   search_fields = ['data']
 

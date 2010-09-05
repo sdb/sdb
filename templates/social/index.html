@@ -89,6 +89,15 @@
       </div>
     </div>
   {% endif %}
+  {% if update.entry.typ = 'travel' %}
+    <div class="comment update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/world.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <span>Trip to <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+      </div>
+    </div>
+  {% endif %}
   {% if update.entry.typ = 'book' %}
     <div class="book update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>

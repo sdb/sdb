@@ -22,6 +22,7 @@ registry['lastfm']           = lambda service: update_lastfm(service)
 registry['posterous']        = lambda service: update_posterous(service)
 registry['flickr']           = lambda service: update_flickr(service)
 registry['stackoverflow']    = lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment')
+registry['dopplr']           = lambda service: parse_dopplr(service)
 
 
 running_update = False
@@ -106,7 +107,7 @@ def update_flickr(service):
       new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
     if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.utcfromtimestamp(int(photos[i+1].attrib["dateupload"])):
       if (len(new_photos) > 0):
-        entry = Entry(service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
+        entry = Entry(uuid="TODO", service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
         entries.append(entry)
       new_photos = []
   return entries
@@ -119,7 +120,7 @@ def update_posterous(service):
   api = posterous.API()
   for post in api.read_posts(hostname=args["hostname"]):
     if post.date > service.updated:
-      entry = Entry(service=service, desc='Posterous Post', data=json.dumps({"title":post.title, "url":post.link}), pub_date=post.date, typ='post')
+      entry = Entry(uuid=post.id, service=service, desc='Posterous Post', data=json.dumps({"title":post.title, "url":post.link}), pub_date=post.date, typ='post')
       entries.append(entry)
   return entries
 
@@ -133,7 +134,7 @@ def update_lastfm(service):
   tracks = user.get_recent_tracks()
   for track in tracks:
     if track.played_on > service.updated:
-      entry = Entry(service=service, desc='Last.fm Update', data=json.dumps({'title':track.name, 'artist':track.artist.name, 'url':track.url, 'image':track.image['large']}), pub_date=track.played_on, typ='scrobble')
+      entry = Entry(uuid=track.url, service=service, desc='Last.fm Update', data=json.dumps({'title':track.name, 'artist':track.artist.name, 'url':track.url, 'image':track.image['large']}), pub_date=track.played_on, typ='scrobble')
       entries.append(entry)
   return entries
 
@@ -149,7 +150,22 @@ def getsatisfaction_entry(entry, service):
   data = {'title' : get_attr('title'),
           'url' : get_attr('link'),
           'desc' : get_attr('description')}
-  return Entry(service=service, desc='Get Satifaction Reply', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ='comment')
+  return Entry(uuid=entry.id, service=service, desc='Get Satifaction Reply', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ='comment')
+
+
+def parse_dopplr(service):
+  import feedparser
+  return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/sdb/feed/mytrips/%s/all' %json.loads(service.args)['feed']), service.updated, lambda e: dopplr_entry(e, service))
+
+
+def dopplr_entry(entry, service):
+  uuid = entry.id
+  entries = Entry.objects.filter(uuid=uuid)
+  if len(entries) > 0:
+    return None
+  data = {'title' : entry.title,
+          'url' : entry.link}
+  return Entry(uuid=entry.id, service=service, desc='Dopplr Activity', data=json.dumps(data), pub_date=datetime.utcnow(), typ='travel')
 
 
 def generic_entry(entry, service, desc, typ):
@@ -160,10 +176,11 @@ def generic_entry(entry, service, desc, typ):
   if not hasattr(entry, 'title') or not hasattr(entry, 'link'):
     return None
 
+  uuid = entry.id if hasattr(entry, 'id') else entry.link
   data = {'title' : get_attr('title'),
           'url' : get_attr('link'),
           'desc' : get_attr('description')}
-  return Entry(service=service, desc=desc, data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ)
+  return Entry(uuid=uuid, service=service, desc=desc, data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ)
 
 
 def parse_generic_feed(url, service, desc, typ):

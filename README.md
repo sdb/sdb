@@ -5,7 +5,7 @@ The Django project for my personal site. Still in early development.
 ### Social stream ###
 
 * show updates from on-line services
-* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction, Stack Overflow and StumbleUpon.
+* supports Twitter, Flickr, Delicious, Disqus, Wakoopa, GitHub, The Hype Machine, Posterous, GoodReads, Last.fm, Get Satisfaction, Stack Overflow, Dopplr, and StumbleUpon.
 * filter by types of updates
 * admin interface
 
@@ -39,7 +39,7 @@ First of all, install the required dependencies.
 * in case of an update to the models, dump the current data to a file with `python manage.py dumpdata social > dump.json --settings=settings_deployment`
 * pull the latest version from the repository with `git pull`
 * update the settings file (if necessary)
-* in case of an update to the models, reset the database with `python manage.py reset social > dump.json --settings=settings_deployment`
+* in case of an update to the models, reset the database with `python manage.py reset social --settings=settings_deployment`
 * in case of an update to the models, import the old data with `python manage.py loaddata dump.json --settings=settings_deployment`
 
 Note that this procedure doesn't always work, especially in those cases where new non-null fields are added to the models.
