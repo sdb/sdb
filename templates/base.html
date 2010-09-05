@@ -32,6 +32,9 @@
         {% if blog %}
         <li class="link"><a href="{{ blog }}">Blog</a></li>
         {% endif %}
+        {% if request.user.is_staff %}
+        <li class="link"><a href="{% url admin:index %}">Admin</a></li>
+        {% endif %}
       </ul>
       {% block sidebar_extra %}{% endblock %}
       <p class="sidenote" style="margin-top: 50px;">Created with <a href="http://www.djangoproject.com/">Django</a>, check out the <a href="http://github.com/sdb/sdb">source code</a>.</p>
