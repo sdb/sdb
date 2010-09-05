@@ -23,6 +23,7 @@
       <div class="icon-update"><img src="/media/img/twitter.png" width="16" height="16" /></div>
       <div class="update-content">
         <span>{{ update.data.title|encode_status }}</span>
+        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
       </div>
     </div>
   {% endif %}
@@ -31,8 +32,7 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/bookmark.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
-        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
@@ -42,8 +42,7 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/heart.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
-        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
@@ -53,8 +52,7 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/pen.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
-        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
       </div>
     </div>
   {% endif %}
@@ -63,7 +61,7 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/collaboration.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
+        <span>{{ update.data.title|encode_status }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>

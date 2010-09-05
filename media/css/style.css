@@ -134,6 +134,7 @@ img.open-link {
 
 .update {
   padding: 3px;
+  margin: 5px;
 }
 
 .update .icon-update {
@@ -192,3 +193,12 @@ div.comment div.desc p {
 div.comment div.desc ul li {
   list-style: disc inside none;
 }
+
+div.update:hover {
+  background: #faf6eb;
+}
+
+div.update-content a.title {
+  text-decoration: none;
+}
+
