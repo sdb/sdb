@@ -39,5 +39,15 @@
         <p>If a service wasn't checked for updates for a configured period of time, then a new update for that service will be scheduled. If not, the service is skipped for this round of update checking.</p>
         <p>Note that it can take a couple of minutes before all services are updated. For now, you'll also have to refresh the page yourself to see the updates.</p>
       </div>
+<script type="text/javascript">
+$(document).ready(function(){
+  $("a#show_feed_note").click(function(event){
+    if ($('div#feed_note').is(':hidden'))
+      $('div#feed_note').fadeIn("slow");
+    else
+      $('div#feed_note').fadeOut("slow");
+  });
+});
+</script>
 {% endblock %}
 
