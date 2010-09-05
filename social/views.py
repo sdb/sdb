@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.http import urlquote_plus
 from django.db.models import Q
+from django.contrib import messages
 
 import simplejson as json
 
@@ -21,7 +22,12 @@ def index(request, typ=""):
 
 def update(request):
   import updater
-  updater.update()
+  to_update = updater.update()
+
+  if not updater.running_update and len(to_update) > 0:
+    messages.add_message(request, messages.INFO, 'Thank you! %d services are scheduled for an update.' %len(to_update))
+  else:
+    messages.add_message(request, messages.INFO, 'Nothing to feed! All services are up-to-date. Thanks anyway!')
   return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
 
 
@@ -38,7 +44,9 @@ def search(request, q):
     query &= item
   entries = Entry.objects.filter(query).order_by('-pub_date')[:per_page]
   updates = prepare_entries(entries)
-  return render_to_response('social/index.html', {'updates':updates, 'query':q.replace('+', ' ')}, context_instance=RequestContext(request))
+  q = q.replace('+', ' ')
+  messages.add_message(request, messages.INFO, '%d search result(s) for "%s"' %(len(updates), q))
+  return render_to_response('social/index.html', {'updates':updates, 'query':q}, context_instance=RequestContext(request))
 
 
 def prepare_entries(entries):
