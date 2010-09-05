@@ -38,7 +38,9 @@
       {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.
       {% else %}Don't <a href="{% url update %}" title="Update all services at once">feed</a> me, i'm {% if elapsed < 3 %}really{% endif %} not hungry.
       {% endif %}
-      Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{% if elapsed > 0 %}{{ elapsed }} minute ago.{% else %} i'm still chewin'!{% endif %}{% endif %}
+      {% if elapsed < 1 %}I'm still chewing!{% else %}
+      Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{{ elapsed }} minute ago.{% endif %}
+      {% endif %}
       </p>
       <p class="sidenote"><a id="show_feed_note" href="javascript:return false">How does this work?</a></p>
       <div id="feed_note" style="display:none;">
