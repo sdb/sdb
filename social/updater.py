@@ -23,6 +23,7 @@ registry['posterous']        = lambda service: update_posterous(service)
 registry['flickr']           = lambda service: update_flickr(service)
 registry['stackoverflow']    = lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment')
 registry['dopplr']           = lambda service: parse_dopplr(service)
+registry['wishlistr']        = lambda service: parse_url('http://www.wishlistr.com/rss/%s', service, lambda e: wishlistr_entry(e, service))
 
 
 running_update = False
@@ -151,6 +152,21 @@ def getsatisfaction_entry(entry, service):
           'url' : get_attr('link'),
           'desc' : get_attr('description')}
   return Entry(uuid=entry.id, service=service, desc='Get Satifaction Reply', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ='comment')
+
+
+def wishlistr_entry(entry, service):
+
+  def get_attr(attr):
+    return getattr(entry, attr) if hasattr(entry, attr) else ''
+
+  if not hasattr(entry, 'title'):
+    return None
+  
+  title = get_attr('title')
+  data = {'title' : title,
+          'url' : get_attr('link'),
+          'desc' : get_attr('description')}
+  return Entry(uuid=title, service=service, desc='Wishlistr Wish', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ='wish')
 
 
 def parse_dopplr(service):
