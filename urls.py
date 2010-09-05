@@ -5,9 +5,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+  (r'^contact/', include('sdb.contact.urls')),
   (r'^stream/', include('sdb.social.urls')),
   (r'^admin/', include(admin.site.urls)),
-  (r'^$', 'django.views.generic.simple.redirect_to', {'url': 'stream'}),
+  url(r'^$', 'django.views.generic.simple.redirect_to', {'url': 'stream'}, name='index'),
 )
 
 if settings.DEBUG:

@@ -104,7 +104,8 @@ INSTALLED_APPS = (
 
     'jogging',
 
-    'sdb.social'
+    'sdb.social',
+    'sdb.contact',
 )
 
 

@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/media/css/style.css" />
   <script type="text/javascript" src="/media/js/jquery.min.js"></script> 
   <title>{% block title %}{{ title }}{% endblock %}</title>
+  {% block head_extra %}{% endblock %}
 </head>
 
 <body>
@@ -22,10 +23,10 @@
   </div>
   <div id="sidebar_wrapper">
     <div id="sidebar">
-      <h2 class="title"><a href="/">{{ title }}</a></h2>
+      <h2 class="title"><a href="{% url index %}">{{ title }}</a></h2>
       <ul class="links">
         <li class="link"><a href="/">Home</a></li>
-        <li class="link"><a href="{% url social %}">Contact</a></li>
+        <li class="link"><a href="{% url contact %}">Contact</a></li>
         <li class="link"><a href="{% url social %}">Stream</a></li>
       </ul>
       <ul id="links" class="links">

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/media/css/contact.css" />
+{% endblock %}
+
+{% block main_content %}
+You can contact me in the following ways:
+<ul>
+  {% if mailto %}
+  <li>send me a <a href="mailto:{{ mailto }}">mail</a></li>
+  {% endif %}
+  {% if twitter and identica %}
+  <li>send me a short message at <a href="{{ twitter }}">Twitter</a> or <a href="{{ identica }}">identi.ca</a></li>
+  {% else %}
+    {% if identica %}
+      <li>send me a short message at <a href="{{ identica }}">identi.ca</a></li>
+    {% endif %}
+    {% if twitter %}
+      <li>send me a short message at <a href="{{ twitter }}">Twitter</a></li>
+    {% endif %}
+  {% endif %}
+</ul>
+{% endblock %}
+
