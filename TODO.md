@@ -7,6 +7,7 @@
 * display notification message to user when javascript is not enabled
 * caching
 * paging
+* show 'admin' link when logged in
 
 ## Features ##
 

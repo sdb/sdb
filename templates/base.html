@@ -9,7 +9,47 @@
 </head>
 
 <body>
-  {% block main_content %}{% endblock %}
+<div id="main">
+  <div id="content_wrapper">
+    <div id="content">
+      {% if messages %}
+      <div id="flash">
+        {% for message in messages %}{{ message }}{% endfor %}
+      </div>
+      {% endif %}
+      {% block main_content %}{% endblock %}
+    </div>
+  </div>
+  <div id="sidebar_wrapper">
+    <div id="sidebar">
+      <h2 class="title"><a href="/">{{ title }}</a></h2>
+      <ul class="links">
+        <li class="link"><a href="/">Home</a></li>
+        <li class="link"><a href="{% url social %}">Contact</a></li>
+        <li class="link"><a href="{% url social %}">Stream</a></li>
+      </ul>
+      <ul id="links" class="links">
+        {% for link in social.links %}
+          <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+      {% block sidebar_extra %}{% endblock %}
+      <p class="sidenote" style="margin-top: 50px;">Created with <a href="http://www.djangoproject.com/">Django</a>, check out the <a href="http://github.com/sdb/sdb">source code</a>.</p>
+      <p class="sidenote">Thanks: <a href="http://www.python.org/">Python</a>, <a href="http://www.djangoproject.com/">Django</a>, <a href="http://pc.de/icons/#Dortmund">PC.DE Dortmund Icon Set</a>, <a href="http://github.com/">GitHub</a></p>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+{% if messages %}
+  $('div#flash').click(function(event){
+    $('div#flash').fadeOut("slow");
+  });
+{% endif %}
+});
+</script>
+
 </body>
 </html>
 
