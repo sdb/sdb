@@ -21,6 +21,7 @@ registry['stumbleupon']      = lambda service: parse_generic_feed('http://rss.st
 registry['lastfm']           = lambda service: update_lastfm(service)
 registry['posterous']        = lambda service: update_posterous(service)
 registry['flickr']           = lambda service: update_flickr(service)
+registry['stackoverflow']    = lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment')
 
 
 running_update = False
@@ -62,7 +63,6 @@ def do_update(services):
   global running_update
 
   for service in services:
-    print service.name
     feed = registry[service.name]
     try:
       entries = feed(service)

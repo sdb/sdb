@@ -184,3 +184,11 @@ update-content .photos ul {
   cursor: help;
   color:#7E7E7E;
 }
+
+div.comment div.desc p {
+  margin-top: 5px;
+}
+
+div.comment div.desc ul li {
+  list-style: disc inside none;
+}
