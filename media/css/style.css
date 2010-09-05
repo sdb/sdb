@@ -195,6 +195,7 @@ div.comment div.desc ul li {
 }
 
 div.update:hover {
+  -moz-border-radius:3px 3px 3px 3px;
   background: #faf6eb;
 }
 

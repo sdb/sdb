@@ -106,6 +106,7 @@ INSTALLED_APPS = (
 
     'sdb.social',
     'sdb.contact',
+    'sdb.about',
 )
 
 
