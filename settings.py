@@ -73,7 +73,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.request',
-    'sdb.social.context_processors.social'
+    'sdb.social.context_processors.social',
+    'sdb.context_processors.main',
 )
 
 MIDDLEWARE_CLASSES = (

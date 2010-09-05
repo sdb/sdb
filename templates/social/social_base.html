@@ -7,6 +7,11 @@
 {% endblock %}
 
 {% block sidebar_extra %}
+      <ul id="links" class="links">
+        {% for link in social.links %}
+          <li class="link"><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
       <div class="box">
         <form action="{% url search_with_param %}" method="get">
           <input type="text" value="{{ query }}" id="searchbox" class="search" name="search" />
