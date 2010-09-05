@@ -7,4 +7,10 @@
 <h1 id="site-name">{% trans 'Admin' %}</h1>
 {% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+<div id="navigation">
+<ul>
+<li><a href="{% url admin:index %}">Admin</a></li>
+<li><a href="{% url index %}">Site</a></li>
+</ul>
+</div>{% endblock %}

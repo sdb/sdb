@@ -741,6 +741,20 @@ table#change-history tbody th {
 
 #content-related .module h2 {
     background: #eee url(../img/admin/nav-bg.gif) bottom left repeat-x;
-    color: #666;
+    color: #555;
+}
+
+/* NAVIGATION */
+
+#navigation ul {
+  overflow: auto;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+#navigation ul li {
+  list-style-type: none;
+  float: left;
+  padding: 0 10px;
 }
 
