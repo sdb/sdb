@@ -22,12 +22,8 @@ def index(request, typ=""):
 
 def update(request):
   import updater
-  to_update = updater.update()
-
-  if not updater.running_update and len(to_update) > 0:
-    messages.add_message(request, messages.INFO, 'Thank you! %d services are scheduled for an update.' %len(to_update))
-  else:
-    messages.add_message(request, messages.INFO, 'Nothing to feed! All services are up-to-date. Thanks anyway!')
+  msg = updater.update()
+  messages.add_message(request, messages.INFO, msg)
   return HttpResponseRedirect(request.GET.get('redirect') if 'redirect' in request.GET else reverse('social'))
 
 

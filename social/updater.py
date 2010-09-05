@@ -49,12 +49,15 @@ def update():
   if not running_update and len(to_update) > 0:
     running_update = True  
     running_update_lock.release()
+    msg = 'Thank you! %d services are scheduled for an update.' %len(to_update)
     if (settings.UPDATE_THREAD):
       UpdateThread(to_update).start()
     else:
       do_update(to_update)
+  else:
+    msg = 'Nothing to feed! All services are up-to-date. Thanks anyway!'
 
-  return to_update
+  return msg
 
 
 def do_update(services):
