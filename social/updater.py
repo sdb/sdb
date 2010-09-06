@@ -9,22 +9,24 @@ import simplejson as json
 # registry of feeders
 registry = {}
 
-registry['delicious']        = lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark')
-registry['twitter']          = lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status')
-registry['hypem']            = lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav')
-registry['github']           = lambda service: parse_generic_feed('http://github.com/%s.atom', service, 'GitHub Activity', 'collab')
-registry['disqus']           = lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment')
-registry['wakoopa']          = lambda service: parse_generic_feed('http://wakoopa.com/%s/newly_used.rss', service, 'Wakoopa Update', 'program')
-registry['goodreads']        = lambda service: parse_generic_feed('http://www.goodreads.com/user/updates_rss/%s', service, 'GoodReads Update', 'book')
-registry['getsatisfaction']  = lambda service: parse_url('http://api.getsatisfaction.com/people/%s/replies', service, lambda e: getsatisfaction_entry(e, service))
-registry['stumbleupon']      = lambda service: parse_generic_feed('http://rss.stumbleupon.com/user/%s/favorites', service, 'StumbleUpon Fav', 'fav')
-registry['lastfm']           = lambda service: update_lastfm(service)
-registry['posterous']        = lambda service: update_posterous(service)
-registry['flickr']           = lambda service: update_flickr(service)
-registry['stackoverflow']    = lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment')
-registry['dopplr']           = lambda service: parse_dopplr(service)
-registry['wishlistr']        = lambda service: parse_url('http://www.wishlistr.com/rss/%s', service, lambda e: wishlistr_entry(e, service))
-registry['blackbeltfactory'] = lambda service: parse_generic_feed('http://www.blackbeltfactory.com/rest/users/%s/exams.xml', service, 'BlackBeltFactory Exam', 'exam')
+registry['delicious']        = (lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark'), lambda service: profile_url(service, 'http://delicious.com/%s'))
+registry['twitter']          = (lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'), lambda service: profile_url(service, 'http://twitter.com/%s'))
+registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'), lambda service: None)
+registry['github']           = (lambda service: parse_generic_feed('http://github.com/%s.atom', service, 'GitHub Activity', 'collab'), lambda service: profile_url(service, 'http://github.com/%s'))
+registry['disqus']           = (lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment'), lambda service: None)
+registry['wakoopa']          = (lambda service: parse_generic_feed('http://wakoopa.com/%s/newly_used.rss', service, 'Wakoopa Update', 'program'), lambda service: None)
+registry['goodreads']        = (lambda service: parse_generic_feed('http://www.goodreads.com/user/updates_rss/%s', service, 'GoodReads Update', 'book'), lambda service: profile_url(service, 'http://www.goodreads.com/user/show/%s'))
+registry['getsatisfaction']  = (lambda service: parse_url('http://api.getsatisfaction.com/people/%s/replies', service, lambda e: getsatisfaction_entry(e, service)), lambda service: None)
+registry['stumbleupon']      = (lambda service: parse_generic_feed('http://rss.stumbleupon.com/user/%s/favorites', service, 'StumbleUpon Fav', 'fav'), lambda service: profile_url(service, 'http://%s.stumbleupon.com/'))
+registry['lastfm']           = (lambda service: update_lastfm(service), lambda service: profile_url(service, 'http://www.last.fm/user/%s'))
+registry['posterous']        = (lambda service: update_posterous(service), lambda service: None)
+registry['flickr']           = (lambda service: update_flickr(service), lambda service: profile_url(service, 'http://www.flickr.com/photos/%s', 'user_name'))
+registry['stackoverflow']    = (lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment'), lambda service: None)
+registry['dopplr']           = (lambda service: parse_dopplr(service), lambda service: None)
+registry['wishlistr']        = (lambda service: parse_url('http://www.wishlistr.com/rss/%s', service, lambda e: wishlistr_entry(e, service)), lambda service: None)
+registry['blackbeltfactory'] = (lambda service: parse_generic_feed('http://www.blackbeltfactory.com/rest/users/%s/exams.xml', service, 'BlackBeltFactory Exam', 'exam'), lambda service: None)
+registry['linkedin']         = (None, lambda service: profile_url(service, 'http://www.linkedin.com/in/%s'))
+registry['identica']         = (None, lambda service: profile_url(service, 'http://identi.ca/%s'))
 
 
 running_update = False
@@ -42,9 +44,11 @@ def update():
 
   for service in services:
     if registry.has_key(service.name):
-      prev_update = service.updated
-      if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
-        to_update.append(service)
+      entry = registry[service.name][0]
+      if entry != None:
+        prev_update = service.updated
+        if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
+          to_update.append(service)
     else:
       logging.warning('updater for service %s not found' %service.name)
 
@@ -69,7 +73,7 @@ def do_update(services):
   global running_update
 
   for service in services:
-    feed = registry[service.name]
+    feed = registry[service.name][0]
     try:
       entries = feed(service)
       # TODO should be in a transaction
@@ -92,6 +96,9 @@ class UpdateThread ( threading.Thread ):
   def run ( self ):
     do_update(self.services)
 
+
+def profile_url(service, u, key='user'):
+  return u %json.loads(service.args)[key]
 
 def update_flickr(service):
   import flickrapi

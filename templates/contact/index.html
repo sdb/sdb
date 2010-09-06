@@ -1,28 +1,38 @@
 {% extends "base.html" %}
 
+{% load social_extras %}
+
 {% block head_extra %}
 <link rel="stylesheet" href="/media/css/contact.css" />
 {% endblock %}
 
 {% block main_content %}
-You can contact me in the following ways:
+<p>You can contact me in the following ways:</p>
 <ul>
   {% if mailto %}
-  <li>send me a <a href="mailto:{{ mailto }}">mail</a></li>
+  <li>an <a href="mailto:{{ mailto }}">e-mail</a></li>
   {% endif %}
   {% if twitter and identica %}
-  <li>send me a short message at <a href="{{ twitter }}">Twitter</a> or <a href="{{ identica }}">identi.ca</a></li>
+  <li>a short message at <a href="{{ twitter }}">Twitter</a> or <a href="{{ identica }}">identi.ca</a></li>
   {% else %}
     {% if identica %}
-      <li>send me a short message at <a href="{{ identica }}">identi.ca</a></li>
+      <li>a short message at <a href="{{ identica }}">identi.ca</a></li>
     {% endif %}
     {% if twitter %}
-      <li>send me a short message at <a href="{{ twitter }}">Twitter</a></li>
+      <li>a short message at <a href="{{ twitter }}">Twitter</a></li>
     {% endif %}
   {% endif %}
   {% if linkedin %}
-    <li>via <a href="{{ linkedin }}">LinkedIn</a></li>
+    <li>a message via <a href="{{ linkedin }}">LinkedIn</a></li>
   {% endif %}
+</ul>
+<p>You can also connect with me on the following services:</p>
+<ul>
+{% for service in social.services %}
+  {% if service.props_dict.profile %}
+    <li class="link"><a href="{{service|profile}}">{{ service.title }}</a></li>
+  {% endif %}
+{% endfor %}
 </ul>
 {% endblock %}
 

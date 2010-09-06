@@ -1,6 +1,10 @@
 #content {
-  margin-top: 20px;
+  margin-top: 0;
   margin-left: 100px;
+}
+
+#content p {
+  margin-top: 30px;
 }
 
 #content li {
