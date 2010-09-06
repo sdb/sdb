@@ -3,6 +3,10 @@
 
 {% block title %}{{ title }} | {% trans 'Admin' %}{% endblock %}
 
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="/media/css/admin.css" />
+{% endblock %}
+
 {% block branding %}
 <h1 id="site-name">{% trans 'Admin' %}</h1>
 {% endblock %}
