@@ -129,6 +129,16 @@
       </div>
     </div>
   {% endif %}
+  {% if update.entry.typ = 'exam' %}
+    <div class="book update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/finished-work.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <span>Succeeded exam <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+        <div class="desc">{{ update.data.desc|safe }}</div>
+      </div>
+    </div>
+  {% endif %}
   <hr />
 {% endfor %}
 {% endblock %}

@@ -24,6 +24,7 @@ registry['flickr']           = lambda service: update_flickr(service)
 registry['stackoverflow']    = lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment')
 registry['dopplr']           = lambda service: parse_dopplr(service)
 registry['wishlistr']        = lambda service: parse_url('http://www.wishlistr.com/rss/%s', service, lambda e: wishlistr_entry(e, service))
+registry['blackbeltfactory'] = lambda service: parse_generic_feed('http://www.blackbeltfactory.com/rest/users/%s/exams.xml', service, 'BlackBeltFactory Exam', 'exam')
 
 
 running_update = False
