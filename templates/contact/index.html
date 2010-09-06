@@ -13,24 +13,24 @@
   <li>an <a href="mailto:{{ mailto }}">e-mail</a></li>
   {% endif %}
   {% if twitter and identica %}
-  <li>a short message at <a href="{{ twitter }}">Twitter</a> or <a href="{{ identica }}">identi.ca</a></li>
+  <li>a short message at <a href="{{ twitter }}" rel="me">Twitter</a> or <a href="{{ identica }}" rel="me">identi.ca</a></li>
   {% else %}
     {% if identica %}
-      <li>a short message at <a href="{{ identica }}">identi.ca</a></li>
+      <li>a short message at <a href="{{ identica }}" rel="me">identi.ca</a></li>
     {% endif %}
     {% if twitter %}
-      <li>a short message at <a href="{{ twitter }}">Twitter</a></li>
+      <li>a short message at <a href="{{ twitter }}" rel="me">Twitter</a></li>
     {% endif %}
   {% endif %}
   {% if linkedin %}
-    <li>a message via <a href="{{ linkedin }}">LinkedIn</a></li>
+    <li>a message via <a href="{{ linkedin }}" rel="me">LinkedIn</a></li>
   {% endif %}
 </ul>
 <p>You can also connect with me on the following services:</p>
 <ul>
 {% for service in social.services %}
   {% if service.props_dict.profile %}
-    <li class="link"><a href="{{service|profile}}">{{ service.title }}</a></li>
+    <li class="link"><a href="{{service|profile}}"  rel="me">{{ service.title }}</a></li>
   {% endif %}
 {% endfor %}
 </ul>
