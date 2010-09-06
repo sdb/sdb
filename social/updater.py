@@ -33,14 +33,15 @@ running_update = False
 running_update_lock = threading.RLock()
 
 
-def update():
-  """ Updates all services which require an update. """
+def update(services=None):
+  """ Updates the given list of service or all services (if the list is None), which require an update. """
 
   global running_update
   global running_update_lock
 
   to_update = []
-  services = Service.objects.all()
+  if services == None:
+    services = Service.objects.all()
 
   for service in services:
     if registry.has_key(service.name):

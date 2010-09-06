@@ -16,5 +16,6 @@
 <ul>
 <li><a href="{% url admin:index %}">Admin</a></li>
 <li><a href="{% url index %}">Site</a></li>
+<li><a href="{% url update %}?redirect={{ request.path }}">Update</a></li>
 </ul>
 </div>{% endblock %}

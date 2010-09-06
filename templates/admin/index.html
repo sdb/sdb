@@ -24,13 +24,7 @@
             {% else %}
                 <th scope="row">{{ model.name }}</th>
             {% endif %}
-
-            {% if model.name = 'Entries' %}
-                <td><a href="{% url update %}?redirect={{ request.path }}">{% trans 'Update' %}</a></td>
-            {% else %}
-                <td>&nbsp;</td>
-            {% endif %}
-
+             <td>&nbsp;</td>
             {% if model.perms.add %}
                 <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
             {% else %}

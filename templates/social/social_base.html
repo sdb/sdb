@@ -39,12 +39,14 @@
       Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{{ elapsed }} minute ago.{% endif %}
       {% endif %}
       </p>
+      <!--
       <p class="sidenote"><a id="show_feed_note" href="javascript:return false">How does this work?</a></p>
       <div id="feed_note" style="display:none;">
         <p>Clicking 'feed' starts a background job which checks all configured services to see if there's anything new.</p>
         <p>If a service wasn't checked for updates for a configured period of time, then a new update for that service will be scheduled. If not, the service is skipped for this round of update checking.</p>
         <p>Note that it can take a couple of minutes before all services are updated. For now, you'll also have to refresh the page yourself to see the updates.</p>
       </div>
+      -->
       <p class="box">Currently aggregating the following services:</p>
       <ul class="links">
         {% for service in social.services %}
