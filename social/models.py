@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+import simplejson as json
+
 
 class Service(models.Model):
   name = models.CharField(max_length=255)
@@ -12,6 +14,13 @@ class Service(models.Model):
 
   def __str__(self):
     return self.title
+
+  def _props_dict(self):
+    # TODO cache
+    if self.props != '':
+      return json.loads(self.props)
+    return None
+  props_dict = property(_props_dict)
 
   class Meta:
     ordering = ['name']
@@ -31,6 +40,7 @@ class Entry(models.Model):
   class Meta:
     verbose_name_plural = 'Entries'
     ordering = ['-pub_date']
+
 
 class Link(models.Model):
   title = models.CharField(max_length=255)

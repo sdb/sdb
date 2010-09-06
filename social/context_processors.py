@@ -10,5 +10,5 @@ def social(request):
   last_update = Service.objects.aggregate(Max('updated'))['updated__max']
   elapsed = ((datetime.utcnow() - last_update).seconds / 60 if not updater.running_update else -1) if last_update != None else 1000
   return {'last_update':last_update,
-          'social':{'links':Link.objects.order_by('title')},
+          'social':{'links':Link.objects.order_by('title'), 'services':Service.objects.all()},
           'elapsed':elapsed,}

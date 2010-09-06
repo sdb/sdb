@@ -7,5 +7,6 @@ urlpatterns = patterns('',
   url(r'^search$', search_with_param, name='search_with_param'),
   url(r'^search/(?P<q>.+)$', search, name='search'),
   url(r'^$', index, name='social'),
-  url(r'^(?P<typ>\w+)/$', index, name='social'),
+  url(r'^(?P<typ>\w+)/$', index, name='social_by_typ'),
+  url(r'^service/(?P<service>\w+)/$', index, name='social_by_service'),
 )

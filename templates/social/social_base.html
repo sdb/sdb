@@ -20,18 +20,18 @@
       </div>
       <ul class="types">
         <li><a href="{% url social %}" title="Show all"><img src="/media/img/home.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'bookmark' %}" title="Show bookmarks only"><img src="/media/img/bookmark.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'photos' %}" title="Show photo updates only"><img src="/media/img/photography.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'collab' %}" title="Show collaboration events only"><img src="/media/img/collaboration.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'fav' %}" title="Show favs only"><img src="/media/img/heart.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'post' %}" title="Show blog posts only"><img src="/media/img/pen.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'status' %}" title="Show status updates only"><img src="/media/img/twitter.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'comment' %}" title="Show comments only"><img src="/media/img/comment.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'book' %}" title="Show books only"><img src="/media/img/library.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'program' %}" title="Show programs only"><img src="/media/img/process.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'travel' %}" title="Show tarvelling only"><img src="/media/img/world.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'wish' %}" title="Show wishlist items only"><img src="/media/img/basket.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social 'exam' %}" title="Show exams only"><img src="/media/img/finished-work.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'bookmark' %}" title="Show bookmarks only"><img src="/media/img/bookmark.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'photos' %}" title="Show photo updates only"><img src="/media/img/photography.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'collab' %}" title="Show collaboration events only"><img src="/media/img/collaboration.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'fav' %}" title="Show favs only"><img src="/media/img/heart.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'post' %}" title="Show blog posts only"><img src="/media/img/pen.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'status' %}" title="Show status updates only"><img src="/media/img/twitter.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'comment' %}" title="Show comments only"><img src="/media/img/comment.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'book' %}" title="Show books only"><img src="/media/img/library.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'program' %}" title="Show programs only"><img src="/media/img/process.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'travel' %}" title="Show tarvelling only"><img src="/media/img/world.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'wish' %}" title="Show wishlist items only"><img src="/media/img/basket.png" width="16" height="16" /></a></li>
+        <li><a href="{% url social_by_typ 'exam' %}" title="Show exams only"><img src="/media/img/finished-work.png" width="16" height="16" /></a></li>
       </ul>
       <p class="box">
       {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.
@@ -47,6 +47,14 @@
         <p>If a service wasn't checked for updates for a configured period of time, then a new update for that service will be scheduled. If not, the service is skipped for this round of update checking.</p>
         <p>Note that it can take a couple of minutes before all services are updated. For now, you'll also have to refresh the page yourself to see the updates.</p>
       </div>
+      <p class="box">Currently aggregating the following services:</p>
+      <ul class="links">
+        {% for service in social.services %}
+          {% if not service.props_dict.hide %}
+          <li class="link"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
 <script type="text/javascript">
 $(document).ready(function(){
   $("a#show_feed_note").click(function(event){
