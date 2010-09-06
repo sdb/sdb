@@ -43,7 +43,6 @@
       <div class="icon-update"><img src="/media/img/heart.png" width="16" height="16" /></div>
       <div class="update-content">
         <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
-        <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
@@ -105,6 +104,7 @@
       <div class="update-content">
         <span>{{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
+        <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
