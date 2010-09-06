@@ -9,7 +9,6 @@
 
 * view stream updates by day/week/month + caching
 * paging
-* feed (updates to site(new version(show commit number), content change(models(service)), stream updates(grouped per update), all) + caching!
-* feeds with syndication framework http://docs.djangoproject.com/en/dev/ref/contrib/syndication/
-* sitemap with sitemap framework http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/?from=olddocs
+* feeds
+* sitemap
 * bliki
