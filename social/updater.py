@@ -12,10 +12,10 @@ registry = {}
 registry['delicious']        = (lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark'), lambda service: profile_url(service, 'http://delicious.com/%s'))
 registry['twitter']          = (lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'), lambda service: profile_url(service, 'http://twitter.com/%s'))
 registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'), lambda service: None)
-registry['github']           = (lambda service: parse_generic_feed('http://github.com/%s.atom', service, 'GitHub Activity', 'collab'), lambda service: profile_url(service, 'http://github.com/%s'))
+registry['github']           = (lambda service: parse_url('http://github.com/%s.atom', service, lambda e: generic_entry(e, service, create_entry=github_entry)), lambda service: profile_url(service, 'http://github.com/%s'))
 registry['disqus']           = (lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment'), lambda service: None)
 registry['wakoopa']          = (lambda service: parse_generic_feed('http://wakoopa.com/%s/newly_used.rss', service, 'Wakoopa Update', 'program'), lambda service: None)
-registry['goodreads']        = (lambda service: parse_generic_feed('http://www.goodreads.com/user/updates_rss/%s', service, 'GoodReads Update', 'book'), lambda service: profile_url(service, 'http://www.goodreads.com/user/show/%s'))
+registry['goodreads']        = (lambda service: parse_goodreads(service), lambda service: profile_url(service, 'http://www.goodreads.com/user/show/%s'))
 registry['getsatisfaction']  = (lambda service: parse_url('http://api.getsatisfaction.com/people/%s/replies', service, lambda e: getsatisfaction_entry(e, service)), lambda service: None)
 registry['stumbleupon']      = (lambda service: parse_generic_feed('http://rss.stumbleupon.com/user/%s/favorites', service, 'StumbleUpon Fav', 'fav'), lambda service: profile_url(service, 'http://%s.stumbleupon.com/'))
 registry['lastfm']           = (lambda service: update_lastfm(service), lambda service: profile_url(service, 'http://www.last.fm/user/%s'))
@@ -100,6 +100,7 @@ class UpdateThread ( threading.Thread ):
 def profile_url(service, u, key='user'):
   return u %json.loads(service.args)[key]
 
+
 def update_flickr(service):
   import flickrapi
   entries = []
@@ -177,6 +178,21 @@ def wishlistr_entry(entry, service):
   return Entry(uuid=title, service=service, desc='Wishlistr Wish', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ='wish')
 
 
+def parse_goodreads(service):
+  import feedparser
+  return parse_feed(feedparser.parse('http://www.goodreads.com/user/updates_rss/%s' %json.loads(service.args)['user']), service.updated, lambda e: goodreads_entry(e, service))
+
+def goodreads_entry(entry, service):
+  uuid = entry.id
+  entries = Entry.objects.filter(uuid=uuid)
+  if len(entries) > 0 or not hasattr(entry, 'title'):
+    return None
+  data = {'title' : entry.title,
+          'url' : entry.link,
+          'desc' : entry.description}
+  return Entry(uuid=entry.id, service=service, desc='GoodReads Activity', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ = 'community' if uuid.find('GroupUser') > -1 else 'book')
+    
+
 def parse_dopplr(service):
   import feedparser
   return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/sdb/feed/mytrips/%s/all' %json.loads(service.args)['feed']), service.updated, lambda e: dopplr_entry(e, service))
@@ -192,19 +208,26 @@ def dopplr_entry(entry, service):
   return Entry(uuid=entry.id, service=service, desc='Dopplr Activity', data=json.dumps(data), pub_date=datetime.utcnow(), typ='travel')
 
 
-def generic_entry(entry, service, desc, typ):
+def github_entry(entry, service, desc, typ, data):
+  import re
+#  if (re.search(r'WatchEvent|FollowEvent', entry.id)):
+  if (entry.id.find('FollowEvent') > -1):
+    typ = 'community'
+  else:
+    typ = 'collab'
+  return Entry(uuid=entry.id, service=service, desc='GitHub Activity', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ)
 
+
+def generic_entry(entry, service, desc=None, typ=None, create_entry = None):
   def get_attr(attr):
     return getattr(entry, attr) if hasattr(entry, attr) else ''
-
   if not hasattr(entry, 'title') or not hasattr(entry, 'link'):
     return None
-
   uuid = entry.id if hasattr(entry, 'id') else entry.link
   data = {'title' : get_attr('title'),
           'url' : get_attr('link'),
           'desc' : get_attr('description')}
-  return Entry(uuid=uuid, service=service, desc=desc, data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ)
+  return Entry(uuid=uuid, service=service, desc=desc, data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ) if create_entry == None else create_entry(entry, service, desc, typ, data)
 
 
 def parse_generic_feed(url, service, desc, typ):

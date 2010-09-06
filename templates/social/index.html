@@ -119,7 +119,7 @@
     </div>
   {% endif %}
   {% if update.entry.typ = 'wish' %}
-    <div class="book update">
+    <div class="wish update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/basket.png" width="16" height="16" /></div>
       <div class="update-content">
@@ -130,11 +130,22 @@
     </div>
   {% endif %}
   {% if update.entry.typ = 'exam' %}
-    <div class="book update">
+    <div class="exam update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/finished-work.png" width="16" height="16" /></div>
       <div class="update-content">
         <span>Succeeded exam <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+        <div class="desc">{{ update.data.desc|safe }}</div>
+      </div>
+    </div>
+  {% endif %}
+  {% if update.entry.typ = 'community' %}
+    <div class="community update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/community.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <span>{{ update.data.title }}</span>
+        <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
