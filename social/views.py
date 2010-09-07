@@ -1,30 +1,60 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.conf import settings
 from django.utils.http import urlquote_plus
 from django.db.models import Q
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.views.generic.list_detail import object_list
 
 import simplejson as json
 
 from social.models import Entry, Service
 
 
-def index(request, typ="", service=""):
-  updates = []
-  per_page = settings.ENTRIES_PER_PAGE
-  entries = Entry.objects
-  if typ != '':
-    entries = entries.filter(typ=typ)
+def index(request, page=1):
+  page = int(page)
+  query = Q()
+  entries = prepare_entries(query)
+  return object_list(request,
+    template_name='social/index.html',
+    queryset=entries,
+    paginate_by=settings.ENTRIES_PER_PAGE,
+    page=page,
+    context_processors=[lambda r: process_paging_context(r, 'social', page)]
+  )
+
+
+def index_by_typ(request, typ, page=1):
+  page = int(page)
+  query = Q(typ=typ)
+  entries = prepare_entries(query)
+  return object_list(request,
+    template_name='social/index.html',
+    queryset=entries,
+    paginate_by=settings.ENTRIES_PER_PAGE,
+    page=page,
+    context_processors=[lambda r: process_paging_context(r, 'social_by_typ', page, kwargs={'typ':typ})]
+  )
+
+
+def index_by_service(request, service, page=1):
+  page = int(page)
+  query = Q()
   if service != '':
     s = Service.objects.filter(name=service)
     if len(s) > 0:
-      entries = entries.filter(service=s[0])
-  entries = entries.order_by('-pub_date')[:per_page]
-  updates = prepare_entries(entries)
-  return render_to_response('social/index.html', {'updates':updates}, context_instance=RequestContext(request))
+      query &= Q(service=s[0])
+  entries = prepare_entries(query)
+  return object_list(request,
+    template_name='social/index.html',
+    queryset=entries,
+    paginate_by=settings.ENTRIES_PER_PAGE,
+    page=page,
+    context_processors=[lambda r: process_paging_context(r, 'social_by_service', page, kwargs={'service':service})]
+  )
 
 
 def update(request):
@@ -38,31 +68,38 @@ def search_with_param(request):
   return HttpResponseRedirect(reverse('search', args=[urlquote_plus(request.GET.get('search'))]))
 
 
-def search(request, q):
-  per_page = settings.ENTRIES_PER_PAGE
+def search(request, q, page=1):
+  page = int(page)
   terms = q.split("+")
   queries = [Q(data__contains=term) for term in terms]
   query = queries.pop()
   for item in queries:
     query &= item
-  entries = Entry.objects.filter(query).order_by('-pub_date')[:per_page]
-  updates = prepare_entries(entries)
-  q = q.replace('+', ' ')
-  messages.add_message(request, messages.INFO, '%d search result(s) for "%s"' %(len(updates), q))
-  return render_to_response('social/index.html', {'updates':updates, 'query':q}, context_instance=RequestContext(request))
+  entries = prepare_entries(query)
+  messages.add_message(request, messages.INFO, '%d search result(s) for "%s"' %(len(entries), q.replace('+', ' ')))
+  return object_list(request,
+    template_name='social/index.html',
+    queryset=entries,
+    paginate_by=settings.ENTRIES_PER_PAGE,
+    page=page,
+    context_processors=[lambda r: process_paging_context(r, 'search', page, kwargs={'q':q})],
+    extra_context={
+      'query':q.replace('+', ' '),
+    }
+  )
 
 
-def prepare_entries(entries):
-  updates = []
-  for entry in entries:
-    update = {'pub_date':entry.pub_date}
-    update['entry'] = entry
-    if entry.typ == 'photos':
-      update['data'] = json.loads(entry.data)[:6]
-    else:
-      update['data'] = json.loads(entry.data)
-    updates.append(update)
-  return updates
+def prepare_entries(query):
+  if query != None:
+    entries = Entry.objects.filter(query).order_by('-pub_date')
+  else:
+    entries = Entry.objects.all().order_by('-pub_date')
+  return entries
+
+
+def process_paging_context(request, view, page, kwargs={}):
+  return {'next_page':reverse(view, kwargs=dict({'page':page+1},**kwargs)),
+          'prev_page':reverse(view, kwargs=dict({'page':page-1},**kwargs))}
   
 
 

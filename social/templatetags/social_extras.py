@@ -16,7 +16,7 @@ def encode_status(value):
 
 @register.filter(name='profile')
 def profile(value):
-  print value.name
   if updater.registry.has_key(value.name):
     return updater.registry[value.name][1](value)
   return None
+

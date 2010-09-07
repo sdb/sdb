@@ -18,7 +18,7 @@
     <div id="content">
       {% if messages %}
       <div id="flash">
-        {% for message in messages %}{{ message }}{% endfor %}
+        {% for message in messages %}{{ message|safe }}{% endfor %}
       </div>
       {% endif %}
       {% block main_content %}{% endblock %}

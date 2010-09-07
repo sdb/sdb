@@ -1,26 +1,20 @@
 from django.db import models
 from datetime import datetime
 import simplejson as json
+from sdb import models as sdb_models
 
 
 class Service(models.Model):
   name = models.CharField(max_length=255)
   title = models.CharField(max_length=255)
   desc = models.CharField(max_length=1023, blank=True)
-  args = models.CharField(max_length=1023)
-  props = models.CharField(max_length=1023, blank=True)
+  args = sdb_models.JSONField(max_length=1023)
+  props = sdb_models.JSONField(max_length=1023, blank=True)
   period = models.IntegerField()
   updated = models.DateTimeField(blank=True, default=datetime.min)
 
   def __str__(self):
     return self.title
-
-  def _props_dict(self):
-    # TODO cache
-    if self.props != '':
-      return json.loads(self.props)
-    return None
-  props_dict = property(_props_dict)
 
   class Meta:
     ordering = ['name']
@@ -28,7 +22,7 @@ class Service(models.Model):
 
 class Entry(models.Model):
   desc = models.CharField(max_length=255)
-  data = models.CharField(max_length=30000)
+  data = sdb_models.JSONField(max_length=30000)
   pub_date = models.DateTimeField()
   typ = models.CharField(max_length=255)
   service = models.ForeignKey('Service')

@@ -99,23 +99,22 @@ class UpdateThread ( threading.Thread ):
 
 
 def profile_url(service, u, key='user'):
-  return u %json.loads(service.args)[key]
+  return u %service.args[key]
 
 
 def update_flickr(service):
   import flickrapi
   entries = []
   prev_update = service.updated
-  args = json.loads(service.args)
-  flickr = flickrapi.FlickrAPI(args["key"])
-  photos = flickr.people_getPublicPhotos(user_id=args["user"], extras='date_upload,url_sq')
+  flickr = flickrapi.FlickrAPI(service.args["key"])
+  photos = flickr.people_getPublicPhotos(user_id=service.args["user"], extras='date_upload,url_sq')
   photos = photos.find('photos').findall('photo')
   new_photos = []
   for i in range(len(photos)):
     photo = photos[i]
     upload_date = datetime.utcfromtimestamp(int(photo.attrib["dateupload"]))
     if upload_date > prev_update:
-      new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (args['user_name'], photo.attrib['id'])})
+      new_photos.append({'id':photo.attrib['id'], 'thumb':photo.attrib['url_sq'], 'url':"http://www.flickr.com/photos/%s/%s" % (service.args['user_name'], photo.attrib['id'])})
     if i == len(photos) - 1 or upload_date - timedelta(minutes=5) > datetime.utcfromtimestamp(int(photos[i+1].attrib["dateupload"])):
       if (len(new_photos) > 0):
         entry = Entry(uuid="TODO", service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
@@ -127,9 +126,8 @@ def update_flickr(service):
 def update_posterous(service):
   import posterous
   entries = []
-  args = json.loads(service.args)
   api = posterous.API()
-  for post in api.read_posts(hostname=args["hostname"]):
+  for post in api.read_posts(hostname=service.args["hostname"]):
     if post.date > service.updated:
       entry = Entry(uuid=post.id, service=service, desc='Posterous Post', data=json.dumps({"title":post.title, "url":post.link}), pub_date=post.date, typ='post')
       entries.append(entry)
@@ -139,9 +137,8 @@ def update_posterous(service):
 def update_lastfm(service):
   import lastfm
   entries = []
-  args = json.loads(service.args) 
-  api = lastfm.Api(args['api_key'])
-  user = api.get_user(args['user'])
+  api = lastfm.Api(service.args['api_key'])
+  user = api.get_user(service.args['user'])
   tracks = user.get_recent_tracks()
   for track in tracks:
     if track.played_on > service.updated:
@@ -181,7 +178,7 @@ def wishlistr_entry(entry, service):
 
 def parse_goodreads(service):
   import feedparser
-  return parse_feed(feedparser.parse('http://www.goodreads.com/user/updates_rss/%s' %json.loads(service.args)['user']), service.updated, lambda e: goodreads_entry(e, service))
+  return parse_feed(feedparser.parse('http://www.goodreads.com/user/updates_rss/%s' %service.args['user']), service.updated, lambda e: goodreads_entry(e, service))
 
 def goodreads_entry(entry, service):
   uuid = entry.id
@@ -196,7 +193,7 @@ def goodreads_entry(entry, service):
 
 def parse_dopplr(service):
   import feedparser
-  return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/sdb/feed/mytrips/%s/all' %json.loads(service.args)['feed']), service.updated, lambda e: dopplr_entry(e, service))
+  return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/sdb/feed/mytrips/%s/all' %service.args['feed']), service.updated, lambda e: dopplr_entry(e, service))
 
 
 def dopplr_entry(entry, service):
@@ -237,8 +234,7 @@ def parse_generic_feed(url, service, desc, typ):
 
 def parse_url(url, service, entry):
   import feedparser
-  args = json.loads(service.args)
-  return parse_feed(feedparser.parse(url %args['user']), service.updated, entry)
+  return parse_feed(feedparser.parse(url %service.args['user']), service.updated, entry)
 
 
 def parse_feed(feed, last_update, entry):

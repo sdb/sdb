@@ -3,8 +3,8 @@
 {% load social_extras %}
 
 {% block social_content %}
-{% for update in updates %}
-  {% if update.entry.typ = 'photos' %}
+{% for update in object_list %}
+  {% if update.typ = 'photos' %}
     <div class="photos update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/photography.png" width="16" height="16" /></div>
@@ -17,17 +17,17 @@
       </ul>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'status' %}
+  {% if update.typ = 'status' %}
     <div class="status update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/twitter.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title|encode_status }}</span>
+        <span class="title">{{ update.data.title|encode_status }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'bookmark' %}
+  {% if update.typ = 'bookmark' %}
     <div class="bookmark update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/bookmark.png" width="16" height="16" /></div>
@@ -37,41 +37,41 @@
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'fav' %}
+  {% if update.typ = 'fav' %}
     <div class="hypem update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/heart.png" width="16" height="16" /></div>
       <div class="update-content">
-        <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
+        <a href="{{ update.data.url }}" class="title">{{ update.data.title }}</a>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'post' %}
+  {% if update.typ = 'post' %}
     <div class="post update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/pen.png" width="16" height="16" /></div>
       <div class="update-content">
-        <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
+        <a href="{{ update.data.url }}" class="title">{{ update.data.title }}</a>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'collab' %}
+  {% if update.typ = 'collab' %}
     <div class="collab update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/collaboration.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title|encode_status }}</span>
+        <span class="title">{{ update.data.title|encode_status }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'comment' %}
+  {% if update.typ = 'comment' %}
     <div class="comment update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/comment.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
+        <span class="title">{{ update.data.title }}</span>
         {% if update.data.url %}
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         {% endif %}
@@ -79,72 +79,72 @@
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'program' %}
+  {% if update.typ = 'program' %}
     <div class="comment update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/process.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>I started using <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+        <span class="title">I started using <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'travel' %}
+  {% if update.typ = 'travel' %}
     <div class="comment update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/world.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>Trip to <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+        <span class="title">Trip to <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'book' %}
+  {% if update.typ = 'book' %}
     <div class="book update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/library.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
+        <span class="title">{{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'scrobble' %}
+  {% if update.typ = 'scrobble' %}
     <div class="scrobble update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/scrobble.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.artist }} - {{ update.data.title }}</span>
+        <span class="title">{{ update.data.artist }} - {{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'wish' %}
+  {% if update.typ = 'wish' %}
     <div class="wish update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/basket.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
+        <span class="title">{{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'exam' %}
+  {% if update.typ = 'exam' %}
     <div class="exam update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/finished-work.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>Succeeded exam <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
+        <span class="title">Succeeded exam <a href="{{ update.data.url }}">{{ update.data.title }}</a></span>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
     </div>
   {% endif %}
-  {% if update.entry.typ = 'community' %}
+  {% if update.typ = 'community' %}
     <div class="community update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/community.png" width="16" height="16" /></div>
       <div class="update-content">
-        <span>{{ update.data.title }}</span>
+        <span class="title">{{ update.data.title }}</span>
         <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         <div class="desc">{{ update.data.desc|safe }}</div>
       </div>
@@ -152,4 +152,10 @@
   {% endif %}
   <hr />
 {% endfor %}
+
+<div id="paging">
+{% if page_obj.has_next %}<a href="{{ next_page }}">Next</a>{% endif %}
+{% if page_obj.has_previous %}<a href="{{ prev_page }}">Previous</a>{% endif %}
+</div>
+
 {% endblock %}

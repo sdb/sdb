@@ -50,7 +50,7 @@
       <p class="box">Currently aggregating the following services:</p>
       <ul class="links">
         {% for service in social.services %}
-          {% if not service.props_dict.hide %}
+          {% if not service.props.hide %}
           <li class="link"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
           {% endif %}
         {% endfor %}
