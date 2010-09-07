@@ -31,6 +31,7 @@ def index_by_typ(request, typ, page=1):
   page = int(page)
   query = Q(typ=typ)
   entries = prepare_entries(query)
+  messages.add_message(request, messages.INFO, 'Found %d entries of type \'%s\'' %(len(entries), typ))
   return object_list(request,
     template_name='social/index.html',
     queryset=entries,
@@ -43,11 +44,15 @@ def index_by_typ(request, typ, page=1):
 def index_by_service(request, service, page=1):
   page = int(page)
   query = Q()
+  service_obj = None
   if service != '':
     s = Service.objects.filter(name=service)
     if len(s) > 0:
-      query &= Q(service=s[0])
+      service_obj = s[0]
+      query &= Q(service=service_obj)
   entries = prepare_entries(query)
+  if service_obj != None:
+    messages.add_message(request, messages.INFO, 'Found %d entries for service \'%s\'' %(len(entries), service_obj.title))
   return object_list(request,
     template_name='social/index.html',
     queryset=entries,
@@ -77,7 +82,7 @@ def search(request, q, page=1):
     query &= item
   entries = prepare_entries(query)
   if q != '':
-    messages.add_message(request, messages.INFO, '%d search result(s) for "%s"' %(len(entries), q.replace('+', ' ')))
+    messages.add_message(request, messages.INFO, '%d search result(s) for \'%s\'' %(len(entries), q.replace('+', ' ')))
   result =  object_list(request,
     template_name='social/index.html',
     queryset=entries,
