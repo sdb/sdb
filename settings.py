@@ -115,5 +115,6 @@ APP_TITLE = ''
 UPDATE_THREAD = True # run update process in separate thread
 ENTRIES_PER_PAGE = 50
 FAVICON='/media/favicon.ico'
+UPDATE_MSG_ELAPSED=10
 
 

@@ -77,7 +77,7 @@ def search(request, q, page=1):
     query &= item
   entries = prepare_entries(query)
   messages.add_message(request, messages.INFO, '%d search result(s) for "%s"' %(len(entries), q.replace('+', ' ')))
-  return object_list(request,
+  result =  object_list(request,
     template_name='social/index.html',
     queryset=entries,
     paginate_by=settings.ENTRIES_PER_PAGE,
@@ -87,6 +87,7 @@ def search(request, q, page=1):
       'query':q.replace('+', ' '),
     }
   )
+  return result
 
 
 def prepare_entries(query):

@@ -17,9 +17,9 @@
   <div id="content_wrapper">
     <div id="content">
       {% if messages %}
-      <div id="flash">
-        {% for message in messages %}{{ message|safe }}{% endfor %}
-      </div>
+      <ul id="flash">
+        {% for message in messages %}<li class="flash">{{ message|safe }}</li>{% endfor %}
+      </ul>
       {% endif %}
       {% block main_content %}{% endblock %}
     </div>
@@ -54,8 +54,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 {% if messages %}
-  $('div#flash').click(function(event){
-    $('div#flash').fadeOut("slow");
+  $('ul#flash').click(function(event){
+    $('ul#flash').fadeOut("slow");
   });
 {% endif %}
 });
