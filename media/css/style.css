@@ -74,6 +74,7 @@ img.open-link:hover {
   padding: 15px;
   font-size: 0.8em;
   margin-top: 20px;
+  line-height:1.5em;
 }
 
 #sidebar p.box {
@@ -81,6 +82,7 @@ img.open-link:hover {
   line-height: 120%;
   text-align: right;
   padding-right: 20px;
+  font-size: 0.9em;
 }
 
 #sidebar p.sidenote {
@@ -249,4 +251,10 @@ div.update-content span.title {
 
 #flash a {
   text-decoration: underline;
+}
+
+#services {
+  font-size: 0.9em;
+  margin-top:15px;
+  line-height: 1.4em;
 }

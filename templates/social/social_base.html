@@ -31,14 +31,6 @@
         -->
         <li><a href="{% url social_by_typ 'exam' %}" title="Show exams only"><img src="/media/img/finished-work.png" width="16" height="16" /></a></li>
       </ul>
-      <p class="box">
-      {% if elapsed > 10 %}<a href="{% url update %}" title="Update all services at once">Feed</a> me, i'm hungry.
-      {% else %}Don't <a href="{% url update %}" title="Update all services at once">feed</a> me, i'm {% if elapsed < 3 %}really{% endif %} not hungry.
-      {% endif %}
-      {% if elapsed < 1 %}I'm still chewing!{% else %}
-      Last meal: {% if elapsed > 1 %}{{ elapsed }} minutes ago.{% else %}{{ elapsed }} minute ago.{% endif %}
-      {% endif %}
-      </p>
       <!--
       <p class="sidenote"><a id="show_feed_note" href="javascript:return false">How does this work?</a></p>
       <div id="feed_note" style="display:none;">
@@ -48,7 +40,7 @@
       </div>
       -->
       <p class="box">Currently aggregating the following services:</p>
-      <ul class="links">
+      <ul id="services" class="links">
         {% for service in social.services %}
           {% if not service.props.hide %}
           <li class="link"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
