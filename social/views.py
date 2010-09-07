@@ -52,7 +52,7 @@ def index_by_service(request, service, page=1):
       query &= Q(service=service_obj)
   entries = prepare_entries(query)
   if service_obj != None:
-    messages.add_message(request, messages.INFO, 'Found %d entries for service \'%s\'' %(len(entries), service_obj.title))
+    messages.add_message(request, messages.INFO, 'Found %d entries for \'%s\'' %(len(entries), service_obj.title))
   return object_list(request,
     template_name='social/index.html',
     queryset=entries,
