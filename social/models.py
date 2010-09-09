@@ -9,7 +9,7 @@ class Service(models.Model):
   title = models.CharField(max_length=255)
   desc = models.CharField(max_length=1023, blank=True)
   args = sdb_models.JSONField(max_length=1023)
-  props = sdb_models.JSONField(max_length=1023, blank=True)
+  props = sdb_models.JSONField(max_length=1023)
   period = models.IntegerField()
   updated = models.DateTimeField(blank=True, default=datetime.min)
 

@@ -6,27 +6,48 @@ from sdb.social.models import Service, Entry
 import simplejson as json
 
 
-# registry of feeders
+# registry of services
 registry = {}
 
-registry['delicious']        = (lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark'), lambda service: profile_url(service, 'http://delicious.com/%s'))
-registry['twitter']          = (lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'), lambda service: profile_url(service, 'http://twitter.com/%s'))
-registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'), lambda service: None)
-registry['github']           = (lambda service: parse_url('http://github.com/%s.atom', service, lambda e: generic_entry(e, service, create_entry=github_entry)), lambda service: profile_url(service, 'http://github.com/%s'))
-registry['disqus']           = (lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment'), lambda service: None)
-registry['wakoopa']          = (lambda service: parse_generic_feed('http://wakoopa.com/%s/newly_used.rss', service, 'Wakoopa Update', 'program'), lambda service: None)
-registry['goodreads']        = (lambda service: parse_goodreads(service), lambda service: profile_url(service, 'http://www.goodreads.com/user/show/%s'))
-registry['getsatisfaction']  = (lambda service: parse_url('http://api.getsatisfaction.com/people/%s/replies', service, lambda e: getsatisfaction_entry(e, service)), lambda service: None)
-registry['stumbleupon']      = (lambda service: parse_generic_feed('http://rss.stumbleupon.com/user/%s/favorites', service, 'StumbleUpon Fav', 'fav'), lambda service: profile_url(service, 'http://%s.stumbleupon.com/'))
-registry['lastfm']           = (lambda service: update_lastfm(service), lambda service: profile_url(service, 'http://www.last.fm/user/%s'))
-registry['posterous']        = (lambda service: update_posterous(service), lambda service: None)
-registry['flickr']           = (lambda service: update_flickr(service), lambda service: profile_url(service, 'http://www.flickr.com/photos/%s', 'user_name'))
-registry['stackoverflow']    = (lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment'), lambda service: None)
-registry['dopplr']           = (lambda service: parse_dopplr(service), lambda service: None)
-registry['wishlistr']        = (lambda service: parse_url('http://www.wishlistr.com/rss/%s', service, lambda e: wishlistr_entry(e, service)), lambda service: None)
-registry['blackbeltfactory'] = (lambda service: parse_generic_feed('http://www.blackbeltfactory.com/rest/users/%s/exams.xml', service, 'BlackBeltFactory Exam', 'exam'), lambda service: None)
-registry['linkedin']         = (None, lambda service: profile_url(service, 'http://www.linkedin.com/in/%s'))
-registry['identica']         = (None, lambda service: profile_url(service, 'http://identi.ca/%s'))
+registry['delicious']        = (lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark'), 
+                                lambda service: profile_url(service, 'http://delicious.com/%s'))
+registry['twitter']          = (lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'),
+                                lambda service: profile_url(service, 'http://twitter.com/%s'))
+registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'),
+                                lambda service: None)
+
+# http://twitter.com/favorites/127041813.rss
+
+registry['github']           = (lambda service: parse_url('http://github.com/%s.atom', service, lambda e: generic_entry(e, service, create_entry=github_entry)),
+                                lambda service: profile_url(service, 'http://github.com/%s'))
+registry['disqus']           = (lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment'),
+                                lambda service: None)
+registry['wakoopa']          = (lambda service: parse_generic_feed('http://wakoopa.com/%s/newly_used.rss', service, 'Wakoopa Update', 'program'),
+                                lambda service: None)
+registry['goodreads']        = (lambda service: parse_goodreads(service),
+                                lambda service: profile_url(service, 'http://www.goodreads.com/user/show/%s'))
+registry['getsatisfaction']  = (lambda service: parse_url('http://api.getsatisfaction.com/people/%s/replies', service,
+                                lambda e: getsatisfaction_entry(e, service)), lambda service: None)
+registry['stumbleupon']      = (lambda service: parse_generic_feed('http://rss.stumbleupon.com/user/%s/favorites', service, 'StumbleUpon Fav', 'fav'),
+                                lambda service: profile_url(service, 'http://%s.stumbleupon.com/'))
+registry['lastfm']           = (lambda service: update_lastfm(service),
+                                lambda service: profile_url(service, 'http://www.last.fm/user/%s'))
+registry['posterous']        = (lambda service: update_posterous(service),
+                                lambda service: None)
+registry['flickr']           = (lambda service: update_flickr(service),
+                                lambda service: profile_url(service, 'http://www.flickr.com/photos/%s', 'user_name'))
+registry['stackoverflow']    = (lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment'),
+                                lambda service: None)
+registry['dopplr']           = (lambda service: parse_dopplr(service),
+                                lambda service: profile_url(service, 'http://www.dopplr.com/traveller/%s'))
+registry['wishlistr']        = (lambda service: parse_url('http://www.wishlistr.com/rss/%s', service,
+                                lambda e: wishlistr_entry(e, service)), lambda service: None)
+registry['blackbeltfactory'] = (lambda service: parse_generic_feed('http://www.blackbeltfactory.com/rest/users/%s/exams.xml', service, 'BlackBeltFactory Exam', 'exam'),
+                                lambda service: None)
+registry['linkedin']         = (None,
+                                lambda service: profile_url(service, 'http://www.linkedin.com/in/%s'))
+registry['identica']         = (None,
+                                lambda service: profile_url(service, 'http://identi.ca/%s'))
 
 
 running_update = False
@@ -76,7 +97,10 @@ def do_update(services):
   for service in services:
     feed = registry[service.name][0]
     try:
-      entries = feed(service)
+      if type(feed) is list:
+        entries = feed(service)
+      else:
+        entries = feed(service)
       # TODO should be in a transaction
       for entry in entries:
         entry.save()
@@ -148,13 +172,10 @@ def update_lastfm(service):
 
 
 def getsatisfaction_entry(entry, service):
-
   def get_attr(attr):
     return getattr(entry, attr) if hasattr(entry, attr) else ''
-
   if not hasattr(entry, 'title'):
     return None
-
   data = {'title' : get_attr('title'),
           'url' : get_attr('link'),
           'desc' : get_attr('description')}
@@ -162,13 +183,10 @@ def getsatisfaction_entry(entry, service):
 
 
 def wishlistr_entry(entry, service):
-
   def get_attr(attr):
     return getattr(entry, attr) if hasattr(entry, attr) else ''
-
   if not hasattr(entry, 'title'):
     return None
-  
   title = get_attr('title')
   data = {'title' : title,
           'url' : get_attr('link'),
@@ -193,8 +211,7 @@ def goodreads_entry(entry, service):
 
 def parse_dopplr(service):
   import feedparser
-  return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/sdb/feed/mytrips/%s/all' %service.args['feed']), service.updated, lambda e: dopplr_entry(e, service))
-
+  return parse_feed(feedparser.parse('http://www.dopplr.com/traveller/%s/feed/mytrips/%s/all' %(service.args['user'], service.args['feed'])), service.updated, lambda e: dopplr_entry(e, service))
 
 def dopplr_entry(entry, service):
   uuid = entry.id
@@ -227,15 +244,12 @@ def generic_entry(entry, service, desc=None, typ=None, create_entry = None):
           'desc' : get_attr('description')}
   return Entry(uuid=uuid, service=service, desc=desc, data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ) if create_entry == None else create_entry(entry, service, desc, typ, data)
 
-
 def parse_generic_feed(url, service, desc, typ):
   return parse_url(url, service, lambda e: generic_entry(e, service, desc, typ))
-
 
 def parse_url(url, service, entry):
   import feedparser
   return parse_feed(feedparser.parse(url %service.args['user']), service.updated, entry)
-
 
 def parse_feed(feed, last_update, entry):
   """ Parses the given feed and returns all new entries after last_update. """

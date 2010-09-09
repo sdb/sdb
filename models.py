@@ -1,52 +1,81 @@
 from django.db import models
-from django.utils import simplejson as json
+from django.utils import simplejson
 from django.conf import settings
 from datetime import datetime
-
-
-class JSONEncoder(json.JSONEncoder):
-   def default(self, obj):
-       if isinstance(obj, datetime):
-           return obj.strftime('%Y-%m-%d %H:%M:%S')
-       elif isinstance(obj, datetime.date):
-           return obj.strftime('%Y-%m-%d')
-       elif isinstance(obj, datetime.time):
-           return obj.strftime('%H:%M:%S')
-       return json.JSONEncoder.default(self, obj)
+from django.core.serializers.json import DjangoJSONEncoder
+import logging
 
 
 class JSONField(models.TextField):
-   def _dumps(self, data):
-       return JSONEncoder().encode(data)
+    """
+A field for storing JSON-encoded data. The data is accessible as standard
+Python data types and is transparently encoded/decoded to/from a JSON
+string in the database.
+"""
+    serialize_to_string = True
 
-   def _loads(self, str):
-       return json.loads(str, encoding=settings.DEFAULT_CHARSET)
+    def __init__(self, verbose_name=None, name=None,
+                 encoder=DjangoJSONEncoder(), **kwargs):
+        models.TextField.__init__(self, verbose_name, name, blank=True,
+                                  **kwargs)
+        self.encoder = encoder
 
-   def db_type(self):
-       return 'text'
+    def db_type(self):
+        return "text"
 
-   def pre_save(self, model_instance, add):
-       value = getattr(model_instance, self.attname, None)
-       return self._dumps(value)
+    def contribute_to_class(self, cls, name):
+        def get_json(model_instance):
+            return self.dumps(getattr(model_instance, self.attname, None))
 
-   def contribute_to_class(self, cls, name):
-       self.class_name = cls
-       super(JSONField, self).contribute_to_class(cls, name)
-       models.signals.post_init.connect(self.post_init)
+        def set_json(model_instance, json):
+            setattr(model_instance, self.attname, self.loads(json))
 
-       def get_json(model_instance):
-           return self._dumps(getattr(model_instance, self.attname, None))
-       setattr(cls, 'get_%s_json' % self.name, get_json)
+        super(JSONField, self).contribute_to_class(cls, name)
 
-       def set_json(model_instance, json):
-           return setattr(model_instance, self.attname, self._loads(json))
-       setattr(cls, 'set_%s_json' % self.name, set_json)
+        setattr(cls, "get_%s_json" % self.name, get_json)
+        setattr(cls, "set_%s_json" % self.name, set_json)
 
-   def post_init(self, **kwargs):
-       if 'sender' in kwargs and 'instance' in kwargs:
-           if kwargs['sender'] == self.class_name and hasattr(kwargs['instance'], self.attname):
-               value = self.value_from_object(kwargs['instance'])
-               if (value):
-                   setattr(kwargs['instance'], self.attname, self._loads(value))
-               else:
-                   setattr(kwargs['instance'], self.attname, None)
+        models.signals.post_init.connect(self.post_init, sender=cls)
+
+    def pre_save(self, model_instance, add):
+        return self.dumps(getattr(model_instance, self.attname, None))
+
+    def post_init(self, instance=None, **kwargs):
+        value = self.value_from_object(instance)
+
+        if value:
+            value = self.loads(value)
+        else:
+            value = {}
+
+        setattr(instance, self.attname, value)
+
+    def get_db_prep_save(self, value):
+        if not isinstance(value, basestring):
+            value = self.dumps(value)
+
+        return super(JSONField, self).get_db_prep_save(value)
+
+    def value_to_string(self, obj):
+        return self.dumps(self.value_from_object(obj))
+
+    def dumps(self, data):
+        return self.encoder.encode(data)
+
+    def loads(self, val):
+        try:
+            val = simplejson.loads(val, encoding=settings.DEFAULT_CHARSET)
+
+            # XXX We need to investigate why this is happening once we have
+            # a solid repro case.
+            if isinstance(val, basestring):
+#                logging.warning("JSONField decode error. Expected dictionary, "
+#                                "got string for input '%s'" % val)
+                # For whatever reason, we may have gotten back
+                val = simplejson.loads(val, encoding=settings.DEFAULT_CHARSET)
+        except ValueError:
+            # There's probably embedded unicode markers (like u'foo') in the
+            # string. We have to eval it.
+            val = eval(val)
+
+        return val
