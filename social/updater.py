@@ -11,13 +11,11 @@ registry = {}
 
 registry['delicious']        = (lambda service: parse_generic_feed('http://feeds.delicious.com/v2/rss/%s', service, 'Delicious Bookmark', 'bookmark'), 
                                 lambda service: profile_url(service, 'http://delicious.com/%s'))
-registry['twitter']          = (lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'),
+registry['twitter']          = ([lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'),
+                                 lambda service: parse_generic_feed('http://twitter.com/favorites/%s.rss', service, 'Twitter Fav', 'fav')],
                                 lambda service: profile_url(service, 'http://twitter.com/%s'))
 registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'),
                                 lambda service: None)
-
-# http://twitter.com/favorites/127041813.rss
-
 registry['github']           = (lambda service: parse_url('http://github.com/%s.atom', service, lambda e: generic_entry(e, service, create_entry=github_entry)),
                                 lambda service: profile_url(service, 'http://github.com/%s'))
 registry['disqus']           = (lambda service: parse_generic_feed('http://disqus.com/%s/comments.rss', service, 'Disqus Update', 'comment'),
@@ -48,6 +46,8 @@ registry['linkedin']         = (None,
                                 lambda service: profile_url(service, 'http://www.linkedin.com/in/%s'))
 registry['identica']         = (None,
                                 lambda service: profile_url(service, 'http://identi.ca/%s'))
+registry['grooveshark']      = (lambda service: parse_generic_feed('http://api.grooveshark.com/feeds/1.0/users/%s/recent_favorite_songs.rss', service, 'Grooveshark Fav', 'fav'), 
+                                lambda service: profile_url(service, 'http://listen.grooveshark.com/user/%s'))
 
 
 running_update = False
@@ -98,7 +98,9 @@ def do_update(services):
     feed = registry[service.name][0]
     try:
       if type(feed) is list:
-        entries = feed(service)
+        entries = []
+        for f in feed:
+          entries.extend(f(service))
       else:
         entries = feed(service)
       # TODO should be in a transaction
