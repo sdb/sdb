@@ -12,6 +12,7 @@ class Service(models.Model):
   props = sdb_models.JSONField(max_length=1023)
   period = models.IntegerField()
   updated = models.DateTimeField(blank=True, default=datetime.min)
+  show_profile = models.BooleanField(default=True)
 
   def __str__(self):
     return self.title

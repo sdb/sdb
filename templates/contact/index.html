@@ -28,10 +28,8 @@
 </ul>
 <p>You can also connect with me on the following services:</p>
 <ul>
-{% for service in social.services %}
-  {% if service.props and service.props.profile %}
-    <li class="link"><a href="{{service|profile}}"  rel="me">{{ service.title }}</a></li>
-  {% endif %}
+{% for service in profile_services %}
+  <li class="link"><a href="{{service|profile}}"  rel="me">{{ service.title }}</a></li>
 {% endfor %}
 </ul>
 {% endblock %}

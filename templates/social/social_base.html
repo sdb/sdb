@@ -41,10 +41,8 @@
       -->
       <p class="box">Currently aggregating the following services:</p>
       <ul id="services" class="links">
-        {% for service in social.services %}
-          {% if not service.props.hide %}
+        {% for service in filter_services %}
           <li class="link"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
-          {% endif %}
         {% endfor %}
       </ul>
 <script type="text/javascript">

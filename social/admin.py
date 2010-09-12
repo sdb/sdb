@@ -13,9 +13,15 @@ def update_services(modeladmin, request, queryset):
   updater.update(queryset)
 update_services.short_description = 'Update selected services'
 
+def show_hide_profile(modeladmin, request, queryset):
+  for s in queryset:
+    s.show_profile = not s.show_profile
+    s.save()
+show_hide_profile.short_description = 'Show/hide profile for selected services'
+
 class ServiceAdmin(admin.ModelAdmin):
-  list_display = ['title', 'name', 'desc', 'period', 'updated', 'args', 'props']
-  actions = [reset_services, update_services]
+  list_display = ['title', 'name', 'desc', 'period', 'show_profile', 'updated', 'args', 'props']
+  actions = [reset_services, update_services, show_hide_profile]
 
 class EntryAdmin(admin.ModelAdmin):
   list_display = ['uuid', 'desc', 'typ', 'service', 'pub_date', 'data']

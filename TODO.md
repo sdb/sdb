@@ -1,7 +1,11 @@
 ## Improvements ##
 
-* support BitBucket updates, Tumblr updates via API, vi.sualize.us updates via feed, IntenseDebate comments, Grooveshark favs, Vimeo favs, Twitter Favs
-* display notification message to user when javascript is not enabled
+* support Tumblr updates via API, IntenseDebate comments, Vimeo favs
+* display notification message when javascript is not enabled
+* in case of an error
+  * redirect
+  * display error notification
+  * e-mail
 
 ## Features ##
 
