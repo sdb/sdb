@@ -13,6 +13,7 @@
           <input type="submit" style="display: none;" value="Search" id="searchbox_button" class="searchbox_button" />
         </form>
       </div>
+
       <ul class="types">
         <li><a href="{% url social %}" title="Show all"><img src="/media/img/home.png" width="16" height="16" /></a></li>
         <li><a href="{% url social_by_typ 'bookmark' %}" title="Show bookmarks only"><img src="/media/img/bookmark.png" width="16" height="16" /></a></li>
@@ -31,29 +32,40 @@
         -->
         <li><a href="{% url social_by_typ 'exam' %}" title="Show exams only"><img src="/media/img/finished-work.png" width="16" height="16" /></a></li>
       </ul>
-      <!--
-      <p class="sidenote"><a id="show_feed_note" href="javascript:return false">How does this work?</a></p>
-      <div id="feed_note" style="display:none;">
-        <p>Clicking 'feed' starts a background job which checks all configured services to see if there's anything new.</p>
-        <p>If a service wasn't checked for updates for a configured period of time, then a new update for that service will be scheduled. If not, the service is skipped for this round of update checking.</p>
-        <p>Note that it can take a couple of minutes before all services are updated. For now, you'll also have to refresh the page yourself to see the updates.</p>
-      </div>
-      -->
+
       <p class="box">Currently aggregating the following services:</p>
+      <div id="services_filter" style="display:none">
+      <ul id="services" class="links">
+        {% for service in filter_services|slice:":5" %}
+          <li class="link visible"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
+        {% endfor %}
+        {% for service in filter_services|slice:"5:" %}
+          <li class="link hidden"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
+        {% endfor %}
+      </ul>
+      <p class="sidenote"><a id="show_all_services" href="javascript: return false;">More ...</a></p>
+      </div>
+
+      <noscript>
       <ul id="services" class="links">
         {% for service in filter_services %}
           <li class="link"><a href="{% url social_by_service service.name %}">{{ service.title }}</a></li>
         {% endfor %}
       </ul>
+      </noscript>
+
 <script type="text/javascript">
 $(document).ready(function(){
-  $("a#show_feed_note").click(function(event){
-    if ($('div#feed_note').is(':hidden'))
-      $('div#feed_note').fadeIn("slow");
-    else
-      $('div#feed_note').fadeOut("slow");
+  $('div#services_filter').fadeIn("slow");
+  $("a#show_all_services").click(function(event){
+    var link = $(this);
+    $("li.hidden").each(function (i) {
+      $(this).css("display", $(this).is(':hidden') ? "block" : "none");
+      link.text(($(this).is(':hidden') ? "More" : "Less") + " ...")
+    });
   });
 });
 </script>
+
 {% endblock %}
 

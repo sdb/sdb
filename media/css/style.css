@@ -194,11 +194,6 @@ update-content .photos ul {
   font-size:0.9em;
 }
 
-#show_feed_note {
-  cursor: help;
-  color:#7E7E7E;
-}
-
 div.comment div.desc p {
   margin-top: 5px;
 }
@@ -257,4 +252,12 @@ div.update-content span.title {
   font-size: 0.9em;
   margin-top:15px;
   line-height: 1.4em;
+}
+
+ul#services li.hidden {
+  display: none;
+}
+
+#show_all_services {
+  color:#7E7E7E;
 }

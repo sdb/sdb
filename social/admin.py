@@ -20,7 +20,7 @@ def show_hide_profile(modeladmin, request, queryset):
 show_hide_profile.short_description = 'Show/hide profile for selected services'
 
 class ServiceAdmin(admin.ModelAdmin):
-  list_display = ['title', 'name', 'desc', 'period', 'show_profile', 'updated', 'args', 'props']
+  list_display = ['title', 'name', 'desc', 'period', 'show_profile', 'ranking', 'updated', 'args', 'props']
   actions = [reset_services, update_services, show_hide_profile]
 
 class EntryAdmin(admin.ModelAdmin):

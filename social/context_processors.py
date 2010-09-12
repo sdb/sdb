@@ -15,7 +15,7 @@ def social(request):
   elapsed = ((datetime.utcnow() - last_update).seconds / 60 if not updater.running_update else -1) if last_update != None else 1000
   if request.path.startswith(reverse('social')) and elapsed > settings.UPDATE_MSG_ELAPSED:
       messages.add_message(request, messages.INFO, 'It\'s been a while since the last update. Click <a href="%s">here</a> to schedule an update.' %reverse('update'))
-  services = Service.objects.all()
+  services = Service.objects.all().order_by('-ranking', 'name')
   return {'last_update':last_update,
           'social':{'links':Link.objects.order_by('title')},
           'filter_services': services,
