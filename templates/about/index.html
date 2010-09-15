@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 
+{% load markup %}
+
 {% block head_extra %}
 <link rel="stylesheet" href="/media/css/about.css" />
 {% endblock %}
 
-{% block main_content %}Coming soon!{% endblock %}
+{% block main_content %}
+
+{{ about|markdown }}
+
+{% endblock %}
 

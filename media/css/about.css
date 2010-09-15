@@ -1,5 +1,23 @@
 #content {
-  margin-top: 20px;
-  margin-left: 100px;
+  margin-left: 80px;
   font-size:0.8em;
+}
+
+#content h2 {
+  font-weight: bold;
+  font-size: 120%;
+  color: #009900;
+  margin: 20px 0 10px;
+}
+
+#content p {
+  margin-top: 10px;
+}
+
+#content ul {
+  margin-left: 20px;
+}
+
+#content li {
+  list-style-type: disc;
 }

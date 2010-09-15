@@ -103,8 +103,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.admin',
 
-    'jogging',
+    'django.contrib.markup',
 
+    'jogging',
+    
+    'sdb.core',
     'sdb.social',
     'sdb.contact',
     'sdb.about',
