@@ -2,6 +2,8 @@
 
 {% load social_extras %}
 
+{% block title %}{{ title }} - Lifestream{% endblock %}
+
 {% block main_content %}
 {% block social_content %}{% endblock %}
 {% endblock %}
@@ -14,24 +16,7 @@
         </form>
       </div>
 
-      <ul class="types">
-        <li><a href="{% url social %}" title="Show all"><img src="/media/img/home.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'bookmark' %}" title="Show bookmarks only"><img src="/media/img/bookmark.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'photos' %}" title="Show photo updates only"><img src="/media/img/photography.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'collab' %}" title="Show collaboration events only"><img src="/media/img/collaboration.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'fav' %}" title="Show favs only"><img src="/media/img/heart.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'post' %}" title="Show blog posts only"><img src="/media/img/pen.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'status' %}" title="Show status updates only"><img src="/media/img/twitter.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'comment' %}" title="Show comments only"><img src="/media/img/comment.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'book' %}" title="Show books only"><img src="/media/img/library.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'program' %}" title="Show programs only"><img src="/media/img/process.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'travel' %}" title="Show tarvelling only"><img src="/media/img/world.png" width="16" height="16" /></a></li>
-        <li><a href="{% url social_by_typ 'community' %}" title="Show community activity only"><img src="/media/img/community.png" width="16" height="16" /></a></li>
-        <!--
-        <li><a href="{% url social_by_typ 'wish' %}" title="Show wishlist items only"><img src="/media/img/basket.png" width="16" height="16" /></a></li>
-        -->
-        <li><a href="{% url social_by_typ 'exam' %}" title="Show exams only"><img src="/media/img/finished-work.png" width="16" height="16" /></a></li>
-      </ul>
+      {% include 'social/filter.html' %}
 
       <p class="box">Currently aggregating the following services:</p>
       <div id="services_filter" style="display:none">
