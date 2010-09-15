@@ -73,8 +73,8 @@ img.open-link:hover {
 #sidebar {
   padding: 15px;
   font-size: 0.8em;
-  margin-top: 20px;
-  line-height:1.5em;
+  margin-top: 30px;
+  line-height:1.7em;
 }
 
 #sidebar p.box {
@@ -121,7 +121,7 @@ img.open-link:hover {
 }
 
 .links {
-  margin-top:25px;
+  margin-top:30px;
   padding-right: 20px;
 }
 

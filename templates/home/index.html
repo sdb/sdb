@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load social_extras %}
+{% block head_extra %}
+<link rel="stylesheet" href="/media/css/home.css" />
+{% endblock %}
+{% block main_content %}
+{% include 'home/intro.html' %}
+<h2><a href="{% url social %}">Recent</a></h2>
+<div id="lifestream">
+{% include 'social/stream.html' %}
+</div>
+{% endblock %}
+

@@ -64,6 +64,7 @@ SECRET_KEY = ''
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+    'dbtemplates.loader.load_template_source',
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -104,10 +105,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     'django.contrib.markup',
-
+    'dbtemplates',
     'jogging',
     
     'sdb.core',
+    'sdb.home',
     'sdb.social',
     'sdb.contact',
     'sdb.about',

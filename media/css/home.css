@@ -1,0 +1,22 @@
+#content {
+  margin-left: 100px;
+}
+
+#content h2 {
+  font-weight: bold;
+  font-size: 100%;
+  color: #009900;
+  margin: 40px 0 10px;
+}
+
+#content p {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size:0.8em;
+  width: 90%;
+}
+
+#lifestream {
+  width: 80%;
+  font-size: 90%;
+}
