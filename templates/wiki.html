@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% load markup %}
+
+{% block title %}{{ title }} - {{ page_title }}{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/media/css/wiki.css" />
+{% endblock %}
+
+{% block main_content %}
+
+{{ page_content|markdown }}
+
+{% endblock %}
+

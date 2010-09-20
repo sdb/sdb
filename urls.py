@@ -10,7 +10,6 @@ urlpatterns = patterns('',
   (r'^about/', include('sdb.about.urls')),
   (r'^stream/', include('sdb.social.urls')),
   (r'^admin/', include(admin.site.urls)),
-  url(r'^$', 'django.views.generic.simple.redirect_to', {'url': 'home'}, name='index'),
 )
 
 if settings.DEBUG:
@@ -19,3 +18,7 @@ if settings.DEBUG:
     'serve', {
     'document_root': settings.MEDIA_ROOT,
     'show_indexes': True }),)
+
+urlpatterns += patterns('',
+  (r'^', include('sdb.core.urls')),)
+  
