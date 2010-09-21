@@ -13,6 +13,7 @@ class Service(models.Model):
   period = models.IntegerField()
   updated = models.DateTimeField(blank=True, default=datetime.min)
   show_profile = models.BooleanField(default=True)
+  include_update = models.BooleanField(default=True)
   ranking = models.IntegerField(default=0)
 
   def __str__(self):

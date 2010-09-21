@@ -18,6 +18,6 @@ def social(request):
   services = Service.objects.all().order_by('-ranking', 'name')
   return {'last_update':last_update,
           'social':{'links':Link.objects.order_by('title')},
-          'filter_services': services,
+          'filter_services': filter(lambda s: s.include_update, services),
           'profile_services': filter(lambda s: s.show_profile, services),
           'elapsed':elapsed,}

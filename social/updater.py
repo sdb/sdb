@@ -69,7 +69,7 @@ def update(services=None):
   for service in services:
     if registry.has_key(service.name):
       entry = registry[service.name][0]
-      if entry != None:
+      if entry != None and service.include_update:
         prev_update = service.updated
         if prev_update + timedelta(minutes=service.period) <= datetime.utcnow():
           to_update.append(service)
