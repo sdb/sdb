@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% load social_extras %}
+
+{% block title %}{{ title }} - {{ flatpage.title }}{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/media/css/flat.css" />
+{% endblock %}
+
+{% block main_content %}
+{{ flatpage.content }}
+{% endblock %}
+

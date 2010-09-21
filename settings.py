@@ -85,6 +85,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'jogging.middleware.LoggingMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'sdb.urls'
@@ -101,6 +102,8 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.flatpages',
+    'django.contrib.sitemaps',
     'django.contrib.messages',
     'django.contrib.admin',
 
@@ -112,7 +115,6 @@ INSTALLED_APPS = (
     'sdb.home',
     'sdb.social',
     'sdb.contact',
-    'sdb.about',
 )
 
 

@@ -7,9 +7,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
   (r'^home/', include('sdb.home.urls')),
   (r'^contact/', include('sdb.contact.urls')),
-  (r'^about/', include('sdb.about.urls')),
   (r'^stream/', include('sdb.social.urls')),
   (r'^admin/', include(admin.site.urls)),
+#  (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )
 
 if settings.DEBUG:
