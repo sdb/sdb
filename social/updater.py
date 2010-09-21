@@ -48,6 +48,8 @@ registry['identica']         = (None,
                                 lambda service: profile_url(service, 'http://identi.ca/%s'))
 registry['grooveshark']      = (lambda service: parse_generic_feed('http://api.grooveshark.com/feeds/1.0/users/%s/recent_favorite_songs.rss', service, 'Grooveshark Fav', 'fav'), 
                                 lambda service: profile_url(service, 'http://listen.grooveshark.com/user/%s'))
+registry['vimeo']            = (lambda service: parse_generic_feed('http://vimeo.com/%s/likes/rss', service, 'Vimeo Fav', 'fav'),
+                                lambda service: profile_url(service, 'http://vimeo.com/%s'))
 
 
 running_update = False

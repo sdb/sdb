@@ -194,7 +194,7 @@ update-content .photos ul {
   font-size:0.9em;
 }
 
-div.comment div.desc p {
+div.comment div.desc p, div.fav div.desc p {
   margin-top: 5px;
 }
 
