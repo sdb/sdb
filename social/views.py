@@ -70,7 +70,10 @@ def update(request):
 
 
 def search_with_param(request):
-  return HttpResponseRedirect(reverse('search', args=[urlquote_plus(request.GET.get('search'))]))
+  if request.GET.has_key('search') and request.GET.get('search') != '':
+    return HttpResponseRedirect(reverse('search', args=[urlquote_plus(request.GET.get('search'))]))
+  else:
+    return HttpResponseRedirect(reverse('social'))
 
 
 def search(request, q, page=1):
