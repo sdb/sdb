@@ -210,7 +210,7 @@ def goodreads_entry(entry, service):
   data = {'title' : entry.title,
           'url' : entry.link,
           'desc' : entry.description}
-  return Entry(uuid=entry.id, service=service, desc='GoodReads Activity', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ = 'community' if uuid.find('GroupUser') > -1 else 'book')
+  return Entry(uuid=entry.id, service=service, desc='GoodReads Activity', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ = 'community' if uuid.find('GroupUser') > -1 or uuid.find('Friend') > -1 else 'book')
     
 
 def parse_dopplr(service):
