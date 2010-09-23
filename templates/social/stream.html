@@ -6,7 +6,7 @@
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
       <div class="icon-update"><img src="/media/img/photography.png" width="16" height="16" /></div>
       <ul class="update-content">
-        {% for item in update.data %}
+        {% for item in update.data|slice:"-5:" %}
           <li>
             <a href="{{ item.url }}"><img class="thumb" src="{{ item.thumb }}" height="75px" width="75px" /></a>
           </li>
