@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load social_extras %}
+{% load photos_extras %}
 
 {% block title %}{{ title }} - Home{% endblock %}
 
@@ -8,10 +9,25 @@
 <link rel="stylesheet" href="/media/css/home.css" />
 {% endblock %}
 {% block main_content %}
+
 {% include 'home/intro.html' %}
+
+<ul class="photos">
+{% for photo in photos %}
+  <li class="photo">
+    <a href="{{photo|flickr_link}}">
+      <img width="{{photo.data.width_sq}}" height="{{photo.data.height_sq}}" src="{{photo.data.url_sq}}" />
+    </a>
+  </li>
+{% endfor %}
+</ul>
+
+{% include 'home/content.html' %}
+
 <h2><a href="{% url social %}">Recent</a></h2>
 <div id="lifestream">
 {% include 'social/stream.html' %}
 </div>
+
 {% endblock %}
 
