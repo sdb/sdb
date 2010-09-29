@@ -79,7 +79,7 @@ def search_with_param(request):
 def search(request, q, page=1):
   page = int(page)
   terms = q.split("+")
-  queries = [Q(data__contains=term) for term in terms]
+  queries = [Q(data__icontains=term) for term in terms]
   query = queries.pop()
   for item in queries:
     query &= item
