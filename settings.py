@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'sdb.home',
     'sdb.social',
     'sdb.contact',
+    'sdb.photos',
 )
 
 

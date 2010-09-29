@@ -1,0 +1,19 @@
+#content {
+  margin-left: 100px;
+}
+
+li.photo {
+  float: left;
+  margin: 7px;
+  opacity: 0.5;
+}
+
+ul.photos {
+  overflow: auto;
+  margin: 30px 30px 0;
+}
+
+#content p {
+  margin-top: 10px;
+  font-size:0.8em;
+}

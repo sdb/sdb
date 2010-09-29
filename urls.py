@@ -15,6 +15,7 @@ urlpatterns = patterns('',
   (r'^home/', include('sdb.home.urls')),
   (r'^contact/', include('sdb.contact.urls')),
   (r'^stream/', include('sdb.social.urls')),
+  (r'^photos/', include('sdb.photos.urls')),
   (r'^admin/', include(admin.site.urls)),
   (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )

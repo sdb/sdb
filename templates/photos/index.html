@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% load photos_extras %}
+
+{% block title %}{{ title }} - Photos{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/media/css/photos.css" />
+{% endblock %}
+
+{% block main_content %}
+
+{% include 'photos/intro.html' %}
+
+<ul class="photos">
+{% for photo in photos %}
+  <li class="photo">
+    <a href="{{photo|flickr_link}}">
+      <img width="{{photo.data.width_sq}}" height="{{photo.data.height_sq}}" src="{{photo.data.url_sq}}" />
+    </a>
+  </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
