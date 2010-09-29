@@ -6,6 +6,7 @@ li.photo {
   float: left;
   margin: 7px;
   opacity: 0.5;
+  filter:alpha(opacity=50)
 }
 
 ul.photos {
@@ -16,4 +17,9 @@ ul.photos {
 #content p {
   margin-top: 10px;
   font-size:0.8em;
+}
+
+li.photo:hover {
+  opacity: 0.9;
+  filter:alpha(opacity=90)
 }

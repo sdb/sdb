@@ -25,9 +25,15 @@ li.photo {
   float: left;
   margin: 7px;
   opacity: 0.5;
+  filter:alpha(opacity=50)
 }
 
 ul.photos {
   overflow: auto;
   margin: 30px 0 0 40px;
+}
+
+li.photo:hover {
+  opacity: 0.9;
+  filter:alpha(opacity=90)
 }
