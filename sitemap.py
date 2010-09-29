@@ -7,7 +7,7 @@ from datetime import datetime
 class MainSitemap(Sitemap):
 
   def items(self):
-    return ['home', 'contact', 'social']
+    return ['home', 'contact', 'social', 'photos.index']
 
   def location(self, obj):
     return reverse(obj)
