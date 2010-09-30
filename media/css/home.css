@@ -37,3 +37,7 @@ li.photo:hover {
   opacity: 0.9;
   filter:alpha(opacity=90)
 }
+
+div.update-content div.desc p {
+  font-size: 1.0em !important;
+}

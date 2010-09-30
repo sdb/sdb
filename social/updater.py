@@ -32,7 +32,8 @@ registry['lastfm']           = (lambda service: update_lastfm(service),
                                 lambda service: profile_url(service, 'http://www.last.fm/user/%s'))
 registry['posterous']        = (lambda service: update_posterous(service),
                                 lambda service: None)
-registry['flickr']           = (lambda service: update_flickr(service),
+registry['flickr']           = ([lambda service: update_flickr(service),
+                                 lambda service: update_flickr_favs(service)],
                                 lambda service: profile_url(service, 'http://www.flickr.com/photos/%s', 'user_name'))
 registry['stackoverflow']    = (lambda service: parse_generic_feed('http://stackoverflow.com/feeds/user/%s', service, 'Stack Overflow Activity', 'comment'),
                                 lambda service: None)
@@ -135,7 +136,8 @@ def update_flickr(service):
   entries = []
   prev_update = service.updated
   flickr = flickrapi.FlickrAPI(service.args["key"])
-  photos = flickr.people_getPublicPhotos(user_id=service.args["user"], extras='date_upload,url_sq')
+  # TODO fetch multiple pages
+  photos = flickr.people_getPublicPhotos(user_id=service.args["user"], extras='date_upload,url_sq', per_page=500)
   photos = photos.find('photos').findall('photo')
   new_photos = []
   for i in range(len(photos)):
@@ -148,6 +150,25 @@ def update_flickr(service):
         entry = Entry(uuid="TODO", service=service, desc='Flickr Update', data=json.dumps(new_photos), pub_date=upload_date, typ='photos')
         entries.append(entry)
       new_photos = []
+  return entries
+
+def update_flickr_favs(service):
+  import flickrapi
+  entries = []
+  prev_update = service.updated
+  flickr = flickrapi.FlickrAPI(service.args["key"])
+  # TODO fetch multiple pages
+  photos = flickr.favorites_getPublicList(user_id=service.args["user"], extras='description', per_page=500)
+  photos = photos.find('photos').findall('photo')
+  for i in range(len(photos)):
+    photo = photos[i]
+    fav_date = datetime.utcfromtimestamp(int(photo.attrib["date_faved"]))
+    if fav_date > prev_update:
+      url = 'http://www.flickr.com/photos/%s/%s' %(photo.attrib['owner'], photo.attrib['id'])
+      thumb = 'http://farm%s.static.flickr.com/%s/%s_%s_m.jpg' %(photo.attrib["farm"], photo.attrib["server"], photo.attrib["id"], photo.attrib["secret"])
+      data = {'thumb':thumb, 'url':url, 'title':photo.attrib['title'], 'desc':photo.find('description').text}
+      entry = Entry(uuid=url, service=service, desc='Flickr Fav', data=json.dumps(data), pub_date=fav_date, typ='fav')
+      entries.append(entry)
   return entries
 
 

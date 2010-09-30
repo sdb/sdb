@@ -30,7 +30,9 @@
       <div class="icon-update"><img src="/media/img/bookmark.png" width="16" height="16" /></div>
       <div class="update-content">
         <a href="{{ update.data.url }}" class="title"><span>{{ update.data.title }}</span></a>
+        {% if update.data.desc %}
         <div class="desc">{{ update.data.desc|safe }}</div>
+        {% endif %}
       </div>
     </div>
   {% endif %}
@@ -43,9 +45,17 @@
           <span class="title">{{ update.data.title|encode_status }}</span>
           <a href="{{ update.data.url }}"><img class="open-link" src="/media/img/open.png" width="12" height="12" /></a>
         {% else %}
-          <a href="{{ update.data.url }}" class="title">{{ update.data.title }}</a>
-          {% if update.service.name = 'vimeo' %}
-            <div class="desc">{{ update.data.desc|safe }}</div>
+          {% if update.service.name = 'flickr' %}
+            <a href="{{ update.data.url }}" class="title">{{ update.data.title }}</a>
+            <div class="desc">
+              <p><a title="{{ update.data.title }}" href="{{ update.data.url }}"><img src="{{ update.data.thumb }}" alt="{{ update.data.title }}"></a></p>
+              <p>{{ update.data.desc|safe }}</p>
+            </div>
+          {% else %}
+            <a href="{{ update.data.url }}" class="title">{{ update.data.title }}</a>
+            {% if update.service.name = 'vimeo' %}
+              <div class="desc">{{ update.data.desc|safe }}</div>
+            {% endif %}
           {% endif %}
         {% endif %}
       </div>

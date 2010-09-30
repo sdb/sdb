@@ -186,7 +186,11 @@ img.open-link:hover {
 div.update-content div.desc {
   font-size: 80%;
   line-height: 140%;
-  margin-top: 5px;
+  margin: 15px 0 10px;
+}
+
+div.update-content div.desc img {
+  margin-bottom: 10px;
 }
 
 update-content .photos ul {
