@@ -7,6 +7,16 @@
 
 {% block head_extra %}
 <link rel="stylesheet" href="/media/css/home.css" />
+
+<script type="text/javascript" src="/media/js/jquery.lightbox-0.5.min.js"></script>
+<link rel="stylesheet" href="/media/css/photos.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/jquery.lightbox-0.5.css" media="screen" />
+<script type="text/javascript">
+$(function() {
+  $('.photos a').lightBox({fixedNavigation:true, imageLoading:'/media/img/lightbox/lightbox-ico-loading.gif',imageBtnPrev:'/media/img/lightbox/lightbox-btn-prev.gif',imageBtnNext:'/media/img/lightbox/lightbox-btn-next.gif',imageBtnClose:'/media/img/lightbox/lightbox-btn-close.gif',imageBlank:'/media/img/lightbox/lightbox-blank.gif'});
+});
+</script>
+
 {% endblock %}
 {% block main_content %}
 
@@ -15,7 +25,7 @@
 <ul class="photos">
 {% for photo in photos %}
   <li class="photo">
-    <a href="{{photo|flickr_link}}">
+    <a href="{{photo|flickr_photo}}">
       <img width="{{photo.data.width_sq}}" height="{{photo.data.height_sq}}" src="{{photo.data.url_sq}}" />
     </a>
   </li>
