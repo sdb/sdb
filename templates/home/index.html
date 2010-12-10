@@ -34,7 +34,22 @@ $(function() {
 
 {% include 'home/content.html' %}
 
-<h2><a href="{% url social %}">Recent</a></h2>
+<h2><a href="{% url social_by_typ 'post' %}">Posts</a></h2>
+<div id="posts">
+{% for post in posts %}
+  <div class="post update">
+    <div class="pre-update">{{ post.pub_date|date:"d/m A" }}</div>
+    <div class="icon-update"><img src="/media/img/pen.png" width="16" height="16" /></div>
+    <div class="update-content">
+      <a href="{{ post.data.url }}" class="title">{{ post.data.title }}</a>
+    </div>
+  </div>  
+  <hr />
+{% endfor %}
+</div>
+
+
+<h2><a href="{% url social %}">Lifestream</a></h2>
 <div id="lifestream">
 {% include 'social/stream.html' %}
 </div>
