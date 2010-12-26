@@ -51,6 +51,9 @@ registry['grooveshark']      = (lambda service: parse_generic_feed('http://api.g
                                 lambda service: profile_url(service, 'http://listen.grooveshark.com/user/%s'))
 registry['vimeo']            = (lambda service: parse_generic_feed('http://vimeo.com/%s/likes/rss', service, 'Vimeo Fav', 'fav'),
                                 lambda service: profile_url(service, 'http://vimeo.com/%s'))
+registry['43things']         = (lambda service: parse_generic_feed('http://www.43things.com/rss/uber/author?username=%s', service, '43 Things Goal', 'goal'),
+                                lambda service: profile_url(service, 'http://www.43things.com/person/%s'))
+
 
 
 running_update = False
@@ -81,7 +84,7 @@ def update(services=None):
   if not running_update and len(to_update) > 0:
     running_update = True  
     running_update_lock.release()
-    msg = 'Thank you! %d services are scheduled for an update.' %len(to_update)
+    msg = 'Thanks! Wait a moment and refresh this page to see the latest updates.'
     if (settings.UPDATE_THREAD):
       UpdateThread(to_update).start()
     else:
