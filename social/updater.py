@@ -53,6 +53,8 @@ registry['vimeo']            = (lambda service: parse_generic_feed('http://vimeo
                                 lambda service: profile_url(service, 'http://vimeo.com/%s'))
 registry['43things']         = (lambda service: parse_generic_feed('http://www.43things.com/rss/uber/author?username=%s', service, '43 Things Goal', 'goal'),
                                 lambda service: profile_url(service, 'http://www.43things.com/person/%s'))
+registry['quora']            = (lambda service: parse_generic_feed('http://www.quora.com/%s/rss', service, 'Quora Event', 'community'),
+                                lambda service: profile_url(service, 'http://www.quora.com/%s'))
 
 
 
