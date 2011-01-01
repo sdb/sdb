@@ -53,7 +53,7 @@ registry['vimeo']            = (lambda service: parse_generic_feed('http://vimeo
                                 lambda service: profile_url(service, 'http://vimeo.com/%s'))
 registry['43things']         = (lambda service: parse_generic_feed('http://www.43things.com/rss/uber/author?username=%s', service, '43 Things Goal', 'goal'),
                                 lambda service: profile_url(service, 'http://www.43things.com/person/%s'))
-registry['quora']            = (lambda service: parse_generic_feed('http://www.quora.com/%s/rss', service, 'Quora Event', 'community'),
+registry['quora']            = (lambda service: parse_url('http://www.quora.com/%s/rss', service, lambda e: quora_entry(e, service)),
                                 lambda service: profile_url(service, 'http://www.quora.com/%s'))
 
 
@@ -261,6 +261,23 @@ def github_entry(entry, service, desc, typ, data):
   else:
     typ = 'collab'
   return Entry(uuid=entry.id, service=service, desc='GitHub Activity', data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ=typ)
+
+
+# TODO: replace with API?
+def quora_entry(entry, service):
+  def get_attr(attr):
+    return getattr(entry, attr) if hasattr(entry, attr) else ''
+
+  if not hasattr(entry, 'title') or not hasattr(entry, 'link'):
+    return None
+  uuid = entry.id if hasattr(entry, 'id') else entry.link
+  data = {'title' : get_attr('title'),
+          'url' : get_attr('link'),
+          'desc' : get_attr('description')}
+  
+  import re
+  if (data['desc'].find('followed a question.') >= 0):
+    return Entry(uuid=uuid + "/follow", service=service, desc="Quora Activity", data=json.dumps(data), pub_date=datetime(*entry.updated_parsed[:6]), typ="collab")
 
 
 def generic_entry(entry, service, desc=None, typ=None, create_entry = None):
