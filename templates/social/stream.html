@@ -56,6 +56,9 @@
             {% if update.service.name = 'vimeo' %}
               <div class="desc">{{ update.data.desc|safe }}</div>
             {% endif %}
+            {% if update.service.name = 'slideshare' %}
+              <div class="desc slideshare">{{ update.data.desc|safe }}</div>
+            {% endif %}
           {% endif %}
         {% endif %}
       </div>

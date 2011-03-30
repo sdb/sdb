@@ -55,7 +55,8 @@ registry['43things']         = (lambda service: parse_generic_feed('http://www.4
                                 lambda service: profile_url(service, 'http://www.43things.com/person/%s'))
 registry['quora']            = (lambda service: parse_url('http://www.quora.com/%s/rss', service, lambda e: generic_entry(e, service, create_entry=quora_entry)),
                                 lambda service: profile_url(service, 'http://www.quora.com/%s'))
-
+registry['slideshare']       = (lambda service: parse_slideshare(service),
+                                lambda service: profile_url(service, 'http://www.slideshare.net/%s'))
 
 
 running_update = False
@@ -272,6 +273,18 @@ def quora_entry(entry, service, desc, typ, data):
     return None
 
 
+def parse_slideshare(service):
+  import feedparser
+  return parse_feed(feedparser.parse('http://www.slideshare.net/rss/user/%s/favorites' %(service.args['user'])), service.updated, lambda e: slideshare_entry(e, service), lambda e: feedparser._parse_date(e['favdate'])[:6])
+
+def slideshare_entry(entry, service):
+  import feedparser
+  data = {'title' : entry['title'],
+          'url' : entry['link'],
+          'desc' : entry['description']}
+  return Entry(uuid=entry.id, service=service, desc='SlideShare Favorite', data=json.dumps(data), pub_date=datetime(*feedparser._parse_date(entry['favdate'])[:6]), typ='fav')
+
+
 def generic_entry(entry, service, desc=None, typ=None, create_entry = None):
   def get_attr(attr):
     return getattr(entry, attr) if hasattr(entry, attr) else ''
@@ -290,12 +303,12 @@ def parse_url(url, service, entry):
   import feedparser
   return parse_feed(feedparser.parse(url %service.args['user']), service.updated, entry)
 
-def parse_feed(feed, last_update, entry):
+def parse_feed(feed, last_update, entry, get_updated = lambda e: e.updated_parsed[:6]):
   """ Parses the given feed and returns all new entries after last_update. """
 
   entries = []
   for e in feed.entries:
-    if datetime(*e.updated_parsed[:6]) > last_update:
+    if datetime(*get_updated(e)) > last_update:
       new = entry(e)
       if new != None:
         entries.append(new)

@@ -277,3 +277,10 @@ ul#services li.hidden {
 #show_all_services {
   color:#7E7E7E;
 }
+
+
+/* slideshare */
+
+div.update-content div.slideshare img {
+  margin: 10px;
+}
