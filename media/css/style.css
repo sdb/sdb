@@ -285,6 +285,23 @@ div.update-content div.slideshare img {
   margin: 10px;
 }
 
+
+/* tumblr */
+
+div.link div.update-content div.desc blockquote {
+  border-left: 1px solid lightgray;
+  padding-left: 10px;
+}
+
+div.link div.update-content div.desc li {
+  list-style: disc inside;
+}
+
+div.link div.update-content div.desc p {
+  margin-bottom: 5px;
+}
+
+
 /* Github commits */
 
 div.collab div.update-content div.desc div.commits li {

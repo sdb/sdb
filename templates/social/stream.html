@@ -36,6 +36,18 @@
       </div>
     </div>
   {% endif %}
+  {% if update.typ = 'link' %}
+    <div class="link update">
+      <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>
+      <div class="icon-update"><img src="/media/img/link.png" width="16" height="16" /></div>
+      <div class="update-content">
+        <a href="{{ update.data.link_url }}" class="title"><span>{{ update.data.title }}</span></a>
+        {% if update.data.desc %}
+        <div class="desc">{{ update.data.desc|safe }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
   {% if update.typ = 'fav' %}
     <div class="fav update">
       <div class="pre-update">{{ update.pub_date|date:"d/m A" }}</div>

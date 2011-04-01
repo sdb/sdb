@@ -57,6 +57,8 @@ registry['quora']            = (lambda service: parse_url('http://www.quora.com/
                                 lambda service: profile_url(service, 'http://www.quora.com/%s'))
 registry['slideshare']       = (lambda service: parse_slideshare(service),
                                 lambda service: profile_url(service, 'http://www.slideshare.net/%s'))
+registry['tumblr']           = (lambda service: update_tumblr(service),
+                                lambda service: profile_url(service, 'http://%s.tumblr.com', 'site'))
 
 
 running_update = False
@@ -157,6 +159,34 @@ def update_flickr(service):
         entries.append(entry)
       new_photos = []
   return entries
+
+
+def update_tumblr(service):
+  import tumblr
+  t = tumblr.parse('http://%s.tumblr.com/api/read' %service.args['site'])
+  entries = []
+  for p in t.posts:
+    pub_date = datetime.strptime(p.date_gmt, '%Y-%m-%d %H:%M:%S %Z')
+    if pub_date > service.updated:
+      uuid = p.url
+      if (p.type == 'link'):
+        update_type = 'Link' 
+        data = {'title' : p.title,
+          'url' : p.url,
+          'desc' : p.description,
+          'type' : p.type,
+          'link_url' : p.link_url,
+          'via' : p.via}
+        typ = 'link'
+      elif p.type == 'quote':
+        None
+      else:
+        None # TODO
+      if typ:
+        entry = Entry(uuid=uuid, service=service, desc='Tumblr %s' %update_type, data=json.dumps(data), pub_date=pub_date, typ=typ)
+        entries.append(entry)
+  return entries 
+  
 
 def update_flickr_favs(service):
   import flickrapi
