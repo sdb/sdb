@@ -284,3 +284,18 @@ ul#services li.hidden {
 div.update-content div.slideshare img {
   margin: 10px;
 }
+
+/* Github commits */
+
+div.collab div.update-content div.desc div.commits li {
+  list-style: disc inside;
+}
+
+div.collab div.update-content div.desc div.commits li div.message {
+  list-style: disc inside;
+  margin: 5px 0 10px 10px;
+}
+
+div.collab div.update-content div.desc div.commits blockquote {
+  padding-left: 10px;
+}
