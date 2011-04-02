@@ -163,7 +163,7 @@ def update_flickr(service):
 
 def update_tumblr(service):
   import tumblr
-  t = tumblr.parse('http://%s.tumblr.com/api/read' %service.args['site'])
+  t = tumblr.parse('http://%s.tumblr.com/api/read' %service.args['site'], cache_dir=settings.TUMBLR_CACHE_DIR)
   entries = []
   for p in t.posts:
     pub_date = datetime.strptime(p.date_gmt, '%Y-%m-%d %H:%M:%S %Z')
