@@ -14,7 +14,7 @@ registry['delicious']        = (lambda service: parse_generic_feed('http://feeds
 registry['twitter']          = ([lambda service: parse_generic_feed('http://twitter.com/statuses/user_timeline/%s.rss', service, 'Tweet', 'status'),
                                  lambda service: parse_generic_feed('http://twitter.com/favorites/%s.rss', service, 'Twitter Fav', 'fav')],
                                 lambda service: profile_url(service, 'http://twitter.com/%s'))
-registry['hypem']            = (lambda service: parse_generic_feed('http://hypem.com/feed/loved/%s/1/feed.xml', service, 'Hypem Fav', 'fav'),
+registry['hypem']            = (lambda service: parse_hypem(service),
                                 lambda service: None)
 registry['github']           = (lambda service: parse_url('http://github.com/%s.atom', service, lambda e: generic_entry(e, service, create_entry=github_entry)),
                                 lambda service: profile_url(service, 'http://github.com/%s'))
@@ -282,6 +282,20 @@ def dopplr_entry(entry, service):
   data = {'title' : entry.title,
           'url' : entry.link}
   return Entry(uuid=entry.id, service=service, desc='Dopplr Activity', data=json.dumps(data), pub_date=datetime.utcnow(), typ='travel')
+
+
+def parse_hypem(service):
+  import feedparser
+  return parse_feed(feedparser.parse('http://hypem.com/feed/loved/%s/1/feed.xml' %service.args['user']), service.updated, lambda e: hypem_entry(e, service))
+
+def hypem_entry(entry, service):
+  uuid = entry.id
+  entries = Entry.objects.filter(uuid=uuid)
+  if len(entries) > 0:
+    return None
+  data = {'title' : entry.title,
+          'url' : entry.link}
+  return Entry(uuid=entry.id, service=service, desc='Hypem Fav', data=json.dumps(data), pub_date=datetime.utcnow(), typ='fav')
 
 
 def github_entry(entry, service, desc, typ, data):
