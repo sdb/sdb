@@ -9,3 +9,5 @@ dump.json
 *.pid
 
 .commit
+
+.cache
