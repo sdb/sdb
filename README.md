@@ -1,2 +1,1 @@
-The Django project for my personal site. Still in early development stages ...
-
+The Django project for my previous personal website. The project is discontinued and replaced by a website powered by Jekyll and GitHub Pages.
